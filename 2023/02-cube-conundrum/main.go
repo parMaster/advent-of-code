@@ -19,16 +19,11 @@ func PartOne(file string, r, g, b int) (sum int) {
 
 	input, _ := os.ReadFile(file)
 
-	lines := strings.Split(string(input), "\n")
+	lines := strings.Split(strings.TrimSpace(string(input)), "\n")
 	for _, l := range lines {
-
-		if l == "" {
-			return
-		}
 
 		sum += func() int {
 			game, _ := strconv.Atoi(strings.Split(l, ":")[0][5:])
-
 			draws := strings.Split(strings.Split(l, ":")[1], ";")
 
 			for _, draw := range draws {
@@ -55,12 +50,8 @@ func PartOne(file string, r, g, b int) (sum int) {
 func PartTwo(file string) (sum int) {
 	input, _ := os.ReadFile(file)
 
-	lines := strings.Split(string(input), "\n")
+	lines := strings.Split(strings.TrimSpace(string(input)), "\n")
 	for _, l := range lines {
-
-		if l == "" {
-			return
-		}
 
 		sum += func() int {
 			play := map[string]int{

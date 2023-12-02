@@ -76,7 +76,7 @@ func PartTwo(file string) (res int) {
 
 func main() {
 
-	fmt.Println(" Day 4: Camp Cleanup\n\tPart One:", PartOne("input1.txt"))
+	fmt.Println("Day 4: Camp Cleanup\n\tPart One:", PartOne("input1.txt"))
 	fmt.Println("\tPart Two:", PartTwo("input1.txt"))
 
 }

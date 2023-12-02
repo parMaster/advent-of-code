@@ -93,12 +93,12 @@ func main() {
 		fmt.Printf("maxcalories returned error: %e", err)
 	}
 
-	fmt.Printf("maxcalories: %d \n", maxCalories)
+	fmt.Println("Day 1: Calorie Counting\n\tPart One:", maxCalories)
 
 	top3Calories, err := top3calories("input.txt")
 	if err != nil {
 		fmt.Printf("top3calories returned error: %e", err)
 	}
 
-	fmt.Printf("top3calories: %d \n", top3Calories)
+	fmt.Println("\tPart Two:", top3Calories)
 }

@@ -33,17 +33,15 @@ func isSym(c byte) bool {
 }
 
 // square around the [x,y]
-var ax = []int{-1, 0, 1, -1, 1, -1, 0, 1}
-var ay = []int{-1, -1, -1, 0, 0, 1, 1, 1}
+var as = [][]int{{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1}, {1, 1}}
 
 // run checkfunc for every character around [x, y] y - line, x - # of char in line.
 func checkAround(l []string, x, y int, checkFunc func(byte) bool) bool {
-	for _, dy := range ay {
-		for _, dx := range ax {
-			if y+dy > 0 && y+dy < len(l) && x+dx > 0 && x+dx < len(l[y+dy]) {
-				if checkFunc(l[y+dy][x+dx]) {
-					return true
-				}
+	for _, d := range as {
+		dx, dy := d[0], d[1]
+		if y+dy > 0 && y+dy < len(l) && x+dx > 0 && x+dx < len(l[y+dy]) {
+			if checkFunc(l[y+dy][x+dx]) {
+				return true
 			}
 		}
 	}
@@ -95,18 +93,17 @@ func catchNumber(s string, x int) int {
 // check around, collect the numbers, multiply
 func grindTheGearsAround(l []string, x, y int) int {
 	n, n1 := 0, 0
-	for _, dy := range ay {
-		for _, dx := range ax {
-			if y+dy >= 0 && y+dy < len(l) && x+dx >= 0 && x+dx < len(l[y+dy]) {
-				n = catchNumber(l[y+dy], x+dx)
-				if n > 0 {
-					if n1 == 0 {
-						n1 = n
-						continue
-					}
-					if n1 != n {
-						return n * n1
-					}
+	for _, d := range as {
+		dx, dy := d[0], d[1]
+		if y+dy >= 0 && y+dy < len(l) && x+dx >= 0 && x+dx < len(l[y+dy]) {
+			n = catchNumber(l[y+dy], x+dx)
+			if n > 0 {
+				if n1 == 0 {
+					n1 = n
+					continue
+				}
+				if n1 != n {
+					return n * n1
 				}
 			}
 		}

@@ -57,6 +57,57 @@ func PartOne(file string) int {
 	return len(visited)
 }
 
+/** Part Two */
+
+func abs(d image.Point) image.Point {
+	if d.X < 0 {
+		d.X = -d.X
+	}
+
+	if d.Y < 0 {
+		d.Y = -d.Y
+	}
+	return d
+}
+
+func d1(x int) int {
+	if x < 0 {
+		return -1
+	} else if x > 0 {
+		return 1
+	}
+	return 0
+}
+
+func PartTwo(file string) int {
+	visited := map[image.Point]bool{}
+	input, _ := os.ReadFile(file)
+	k := [10]image.Point{} // knots (a head + 9 knots)
+
+	lines := strings.Split(strings.TrimSpace(string(input)), "\n")
+	for _, l := range lines {
+		move, size := pair(l)
+
+		for i := 0; i < size; i++ {
+
+			k[0] = k[0].Add(dir[move])
+
+			for j := 1; j < len(k); j++ {
+
+				d := k[j-1].Sub(k[j])
+				if abs(d).X > 1 || abs(d).Y > 1 {
+					k[j] = k[j].Add(image.Point{d1(d.X), d1(d.Y)})
+				}
+			}
+			visited[k[len(k)-1]] = true
+
+		}
+	}
+
+	return len(visited)
+}
+
 func main() {
 	fmt.Println("Day 9: Rope Bridge\n\tPart One:", PartOne("input1.txt"))
+	fmt.Println("\tPart Two:", PartTwo("input1.txt"))
 }

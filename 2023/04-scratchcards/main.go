@@ -12,14 +12,12 @@ import (
 func Solve(file string) (int, int) {
 	input, _ := os.ReadFile(file)
 	cards := strings.Split(strings.TrimSpace(string(input)), "\n")
-	memo := make([]int, len(cards))
-	for i := 0; i < len(cards); i++ {
-		memo[i] = 1
-	}
+	memo := map[int]int{}
 	var re = regexp.MustCompile(`(?m)(\d+)`)
 
-	sum, two := float64(0), 0
+	sum, two := 0, 0
 	for ic, c := range cards {
+		memo[ic]++
 		numbers := strings.Split(strings.TrimSpace(strings.Split(c, ":")[1]), "|")
 		winning := re.FindAllString(numbers[0], -1)
 		checking := re.FindAllString(numbers[1], -1)
@@ -31,17 +29,15 @@ func Solve(file string) (int, int) {
 			}
 		}
 
-		if w > 0 {
-			// next W cards won MEMO[ic] copies each
-			for i := 1; i <= w && i+ic < len(memo); i++ {
-				memo[i+ic] += memo[ic]
-			}
-			sum += math.Pow(2, float64(w-1))
+		// next W cards won MEMO[ic] copies each
+		for i := 1; i <= w; i++ {
+			memo[i+ic] += memo[ic]
 		}
+		sum += int(math.Pow(2, float64(w-1)))
 		two += memo[ic]
 	}
 
-	return int(sum), two
+	return sum, two
 }
 
 func main() {

@@ -30,7 +30,7 @@ func Solve(file string) (int, int) {
 		}
 
 		// next W cards won MEMO[ic] copies each
-		for i := 1; i <= w; i++ {
+		for i := 1; i <= w && i+ic < len(cards); i++ {
 			memo[i+ic] += memo[ic]
 		}
 		sum += int(math.Pow(2, float64(w-1)))

@@ -82,6 +82,6 @@ func PartTwo(file string) (sum int) {
 }
 
 func main() {
-	fmt.Println("Day 2: Cube Conundrum\n\tPart One:", PartOne("input1.txt", 12, 13, 14))
-	fmt.Println("\tPart Two:", PartTwo("input1.txt"))
+	fmt.Println("Day 2: Cube Conundrum\n\tPart One:", PartOne("../aoc-inputs/2023/02/input1.txt", 12, 13, 14)) // 3059
+	fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2023/02/input1.txt"))                                    //65371
 }

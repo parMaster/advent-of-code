@@ -116,6 +116,6 @@ func PartTwo(file string) (res string) {
 }
 
 func main() {
-	fmt.Println("Day 5: Supply Stacks\n\tPart One:", PartOne("input1.txt"))
-	fmt.Println("\tPart Two:", PartTwo("input1.txt"))
+	fmt.Println("Day 5: Supply Stacks\n\tPart One:", PartOne("../aoc-inputs/2022/05/input1.txt"))
+	fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2022/05/input1.txt"))
 }

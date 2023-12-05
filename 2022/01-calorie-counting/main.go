@@ -88,14 +88,14 @@ func top3calories(filename string) (int, error) {
 
 func main() {
 
-	maxCalories, err := maxcalories("input.txt")
+	maxCalories, err := maxcalories("../aoc-inputs/2022/01/input.txt")
 	if err != nil {
 		fmt.Printf("maxcalories returned error: %e", err)
 	}
 
 	fmt.Println("Day 1: Calorie Counting\n\tPart One:", maxCalories)
 
-	top3Calories, err := top3calories("input.txt")
+	top3Calories, err := top3calories("../aoc-inputs/2022/01/input.txt")
 	if err != nil {
 		fmt.Printf("top3calories returned error: %e", err)
 	}

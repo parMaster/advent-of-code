@@ -8,15 +8,15 @@ import (
 
 func Test_PartOne(t *testing.T) {
 
-	require.Equal(t, "CMZ", PartOne("input0.txt"))
-	require.Equal(t, "CNSZFDVLJ", PartOne("input1.txt"))
+	require.Equal(t, "CMZ", PartOne("../aoc-inputs/2022/05/input0.txt"))
+	require.Equal(t, "CNSZFDVLJ", PartOne("../aoc-inputs/2022/05/input1.txt"))
 
 }
 
 func Test_PartTwo(t *testing.T) {
 
-	require.Equal(t, "MCD", PartTwo("input0.txt"))
-	require.Equal(t, "QNDWLMGNS", PartTwo("input1.txt"))
+	require.Equal(t, "MCD", PartTwo("../aoc-inputs/2022/05/input0.txt"))
+	require.Equal(t, "QNDWLMGNS", PartTwo("../aoc-inputs/2022/05/input1.txt"))
 
 }
 

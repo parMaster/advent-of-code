@@ -7,11 +7,11 @@ import (
 )
 
 func Test_PartOne(t *testing.T) {
-	require.Equal(t, 2, PartOne("input0.txt"))
-	require.Equal(t, 431, PartOne("input1.txt"))
+	require.Equal(t, 2, PartOne("../aoc-inputs/2022/04/input0.txt"))
+	require.Equal(t, 431, PartOne("../aoc-inputs/2022/04/input1.txt"))
 }
 
 func Test_PartTwo(t *testing.T) {
-	require.Equal(t, 4, PartTwo("input0.txt"))
-	require.Equal(t, 823, PartTwo("input1.txt"))
+	require.Equal(t, 4, PartTwo("../aoc-inputs/2022/04/input0.txt"))
+	require.Equal(t, 823, PartTwo("../aoc-inputs/2022/04/input1.txt"))
 }

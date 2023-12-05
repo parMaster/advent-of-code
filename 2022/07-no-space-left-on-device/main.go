@@ -69,7 +69,7 @@ func Solve(file string) (sum int, delete int) {
 
 func main() {
 
-	one, two := Solve("input1.txt")
+	one, two := Solve("../aoc-inputs/2022/07/input1.txt")
 
 	fmt.Println("Day 5: Supply Stacks\n\tPart One:", one)
 	fmt.Println("\tPart Two:", two)

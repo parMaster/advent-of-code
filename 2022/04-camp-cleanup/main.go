@@ -20,6 +20,7 @@ func PartOne(file string) (res int) {
 		p := strings.Split(l, "-")
 		t := [4]int{0, 0, 0, 0}
 		for pi, pp := range p {
+			pp = strings.TrimSpace(pp)
 			a, err := strconv.Atoi(pp)
 			if err != nil {
 				panic(err)
@@ -52,6 +53,7 @@ func PartTwo(file string) (res int) {
 		p := strings.Split(l, "-")
 		t := [4]int{0, 0, 0, 0}
 		for pi, pp := range p {
+			pp = strings.TrimSpace(pp)
 			a, err := strconv.Atoi(pp)
 			if err != nil {
 				panic(err)
@@ -76,7 +78,7 @@ func PartTwo(file string) (res int) {
 
 func main() {
 
-	fmt.Println("Day 4: Camp Cleanup\n\tPart One:", PartOne("input1.txt"))
-	fmt.Println("\tPart Two:", PartTwo("input1.txt"))
+	fmt.Println("Day 4: Camp Cleanup\n\tPart One:", PartOne("../aoc-inputs/2022/04/input1.txt"))
+	fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2022/04/input1.txt"))
 
 }

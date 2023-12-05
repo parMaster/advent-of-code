@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func Test_MaxCalories_PrimitiveInput(t *testing.T) {
-	maxCalories, err := maxcalories("input0.txt")
+	maxCalories, err := maxcalories("../aoc-inputs/2022/01/input0.txt")
 	if err != nil {
 		t.Errorf("maxcalories returned error: %e", err)
 	}
@@ -14,7 +14,7 @@ func Test_MaxCalories_PrimitiveInput(t *testing.T) {
 }
 
 func Test_MaxCalories(t *testing.T) {
-	maxCalories, err := maxcalories("input.txt")
+	maxCalories, err := maxcalories("../aoc-inputs/2022/01/input.txt")
 	if err != nil {
 		t.Errorf("maxcalories returned error: %e", err)
 	}
@@ -25,7 +25,7 @@ func Test_MaxCalories(t *testing.T) {
 }
 
 func Test_Top3Calories(t *testing.T) {
-	top3Calories, err := top3calories("input.txt")
+	top3Calories, err := top3calories("../aoc-inputs/2022/01/input.txt")
 	if err != nil {
 		t.Errorf("top3calories returned error: %e", err)
 	}

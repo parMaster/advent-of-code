@@ -41,7 +41,7 @@ func Solve(file string) (int, int) {
 }
 
 func main() {
-	one, two := Solve("input1.txt")
+	one, two := Solve("../aoc-inputs/2023/04/input1.txt")
 	fmt.Println("Day 4: Scratchcards\n\tPart One:", one) // 23441
 	fmt.Println("\tPart Two:", two)                      // 5923918
 }

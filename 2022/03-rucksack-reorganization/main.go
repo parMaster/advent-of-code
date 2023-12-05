@@ -84,6 +84,6 @@ func PartTwo(file string) (sum int) {
 }
 
 func main() {
-	fmt.Println("Day 3: Rucksack Reorganization\n\tPart One:", PartOne("input1.txt"))
-	fmt.Println("\tPart Two:", PartTwo("input1.txt"))
+	fmt.Println("Day 3: Rucksack Reorganization\n\tPart One:", PartOne("../aoc-inputs/2022/03/input1.txt"))
+	fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2022/03/input1.txt"))
 }

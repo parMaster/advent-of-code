@@ -21,8 +21,8 @@ func Test_PartOne(t *testing.T) {
 	require.Equal(t, false, isSym(s[1]))
 	require.Equal(t, true, isSym(s[2]))
 
-	require.Equal(t, 4361, PartOne("input0.txt"))
-	require.Equal(t, 550064, PartOne("input1.txt"))
+	require.Equal(t, 4361, PartOne("../aoc-inputs/2023/03/input0.txt"))
+	require.Equal(t, 550064, PartOne("../aoc-inputs/2023/03/input1.txt"))
 }
 
 func Test_PartTwo(t *testing.T) {
@@ -43,6 +43,6 @@ func Test_PartTwo(t *testing.T) {
 	require.Equal(t, -1, catchNumber(s, 13))
 	require.Equal(t, 3, catchNumber(s, 14))
 
-	require.Equal(t, 467835, PartTwo("input0.txt"))
-	require.Equal(t, 85010461, PartTwo("input1.txt"))
+	require.Equal(t, 467835, PartTwo("../aoc-inputs/2023/03/input0.txt"))
+	require.Equal(t, 85010461, PartTwo("../aoc-inputs/2023/03/input1.txt"))
 }

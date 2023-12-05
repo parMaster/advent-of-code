@@ -48,7 +48,7 @@ func solve(file string) (int, string) {
 
 func main() {
 
-	sum, letters := solve("input1.txt")
+	sum, letters := solve("../aoc-inputs/2022/10/input1.txt")
 	fmt.Println("Day 10: Cathode ray tube\n\tPart One:", sum) // 14720
 	fmt.Println("\tPart Two:")                                // FZBPBFZF
 	fmt.Println(letters)

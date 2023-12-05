@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"regexp"
 	"strings"
@@ -46,19 +47,16 @@ func calLine(s string) (n int) {
 	return
 }
 
-func PartOne(file string) (int, error) {
+func PartOne(file string) int {
 
-	s, err := stringsFile(file)
-	if err != nil {
-		return 0, err
-	}
+	s, _ := stringsFile(file)
 
 	var sum int
 	for _, l := range s {
 		sum += calLine(l)
 	}
 
-	return sum, nil
+	return sum
 }
 
 /** Part Two **/
@@ -84,12 +82,9 @@ var strNumbers = map[string]int{
 	"9":     9,
 }
 
-func PartTwo(file string) (int, error) {
+func PartTwo(file string) int {
 
-	s, err := stringsFile(file)
-	if err != nil {
-		return 0, err
-	}
+	s, _ := stringsFile(file)
 
 	first := regexp.MustCompile(`(` + strings.Join(maps.Keys(strNumbers), "|") + `)`)
 	last := regexp.MustCompile(`.*(` + strings.Join(maps.Keys(strNumbers), "|") + `)`)
@@ -104,5 +99,10 @@ func PartTwo(file string) (int, error) {
 		// log.Printf("%s ::: %s | %s | +%d = %d ", l, firstFound[1], lastFound[1], v, sum)
 	}
 
-	return sum, nil
+	return sum
+}
+
+func main() {
+	fmt.Println("Day 1: Trebuchet?! \n\tPart One:", PartOne("../aoc-inputs/2023/01/input.txt")) // 53974
+	fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2023/01/input2.txt"))                     // 52840
 }

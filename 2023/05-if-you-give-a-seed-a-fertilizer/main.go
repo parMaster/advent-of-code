@@ -88,33 +88,48 @@ func PartOne(file string) int64 {
 	return slices.Min(seeds)
 }
 
+func solve(start int64, length int64, maps Maps, results chan<- int64) {
+	var loc int64
+	var minlocation int64 = math.MaxInt64
+
+	fmt.Println("Planting ", length, " \tseeds from ", start)
+	for s := start; s < start+length; s++ {
+		seed := s
+		// if seed%10000000 == 0 {
+		// 	fmt.Print(".")
+		// }
+
+		for j := 0; j < len(maps); j++ {
+			for mi := range maps[j] {
+				loc = maps[j][mi].locate(seed)
+				if seed != loc {
+					seed = loc
+					break
+				}
+			}
+		}
+		minlocation = min(minlocation, seed)
+	}
+	fmt.Println(length, " \t seeds planted, starting from", start, ", with result =", minlocation)
+	results <- minlocation
+}
+
 func PartTwo(file string) int64 {
 	seeds, maps := readInput(file)
 
-	var minlocation int64 = math.MaxInt64
-	var seed int64
-	var loc int64
-	for i := 0; i < len(seeds)/2; i++ {
-		start, length := seeds[i*2], seeds[i*2+1]
-		// fmt.Println("start", start, " length = ", length)
-		for s := start; s < start+length; s++ {
-			seed = s
-			if seed%10000000 == 0 {
-				fmt.Print(".")
-			}
+	N := len(seeds) / 2
+	results := make(chan int64, N)
 
-			for j := 0; j < len(maps); j++ {
-				for mi := range maps[j] {
-					loc = maps[j][mi].locate(seed)
-					if seed != loc {
-						seed = loc
-						break
-					}
-				}
-			}
-			minlocation = min(minlocation, seed)
-		}
-		// fmt.Println("minlocation = ", minlocation)
+	var minlocation int64 = math.MaxInt64
+	for i := 0; i < N; i++ {
+		start, length := seeds[i*2], seeds[i*2+1]
+		go solve(start, length, maps, results)
+	}
+
+	fmt.Println("Prepare to wait (up to 20min on i5 3.5GHz)")
+
+	for a := 1; a <= N; a++ {
+		minlocation = min(minlocation, <-results)
 	}
 
 	return minlocation

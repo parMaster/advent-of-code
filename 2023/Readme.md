@@ -17,5 +17,5 @@ This one was brutal :D I'm glad I tested functions in the first part. I wonder w
 Part One was like 15 minutes. Part Two computing for at least 15 minutes...
 
 Brute force it baby! I'd like to, if I had time someday: 
-1. make it bruteforce in parallel, because now it's using only one core; 
-2. think of better solution (collect all stages combinations and solve a problem "what kind of seed can get through?"... idk).
+1. ~~make it bruteforce in parallel, because now it's using only one core~~ faning out every seed range to a separate goroutine got every core 100% loaded, cutting the time by 60%
+1. ~~think of better solution (collect all stages combinations and solve a problem "what kind of seed can get through?".~~ idk if there is any..

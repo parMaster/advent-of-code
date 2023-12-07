@@ -16,6 +16,7 @@ var orders = map[rune]int{'2': 0, '3': 1, '4': 2, '5': 3, '6': 4, '7': 5, '8': 6
 type hand struct {
 	cards []rune
 	bid   int
+	j     bool
 }
 
 // strength of a hand: 0 - highest card ... 6 - five of a kind
@@ -24,9 +25,27 @@ func (h hand) strength() int {
 	for _, c := range h.cards {
 		g[c]++
 	}
+
+	j := 0
+	if h.j {
+		if jokers, ok := g['J']; ok {
+			j = jokers
+			delete(g, 'J')
+		}
+
+	}
+
 	s := maps.Values(g)
 	slices.Sort(s)
 	slices.Reverse(s)
+
+	if h.j && j > 0 {
+		if len(s) > 0 {
+			s[0] += j
+		} else {
+			s = append(s, j)
+		}
+	}
 
 	switch {
 	case s[0] == 5:
@@ -48,20 +67,22 @@ func (h hand) strength() int {
 
 type hands []hand
 
-func (hh hands) read(f string) hands {
+func (hh hands) read(f string, j bool) hands {
 	cat, _ := os.ReadFile(f)
 	lines := strings.Split((strings.TrimSpace(string(cat))), "\n")
 	for _, l := range lines {
 		cards := []rune(strings.TrimSpace(strings.Fields(l)[0]))
 		bid, _ := strconv.Atoi(strings.TrimSpace(strings.Fields(l)[1]))
-		hh = append(hh, hand{cards, bid})
+		hh = append(hh, hand{cards, bid, j})
 	}
 	return hh
 }
 
-func (hh hands) score() (sum int) {
+func (hh hands) score(joker bool) (sum int) {
+	if joker {
+		orders['J'] = -1
+	}
 	sort.Sort(hh)
-	// hh.dump()
 	for i, h := range hh {
 		sum += (i + 1) * h.bid
 	}
@@ -96,13 +117,13 @@ func (hh hands) Len() int {
 }
 
 func main() {
-	h := hands{}
-	h = h.read("../aoc-inputs/2023/07/input1.txt")
-	fmt.Println(h.score()) // 253638586
+	fmt.Println("Day 7: Camel Cards \n\tPart One:", hands{}.read("../aoc-inputs/2023/07/input1.txt", false).score(false)) // p1: 253638586
+	fmt.Println("\tPart Two:", hands{}.read("../aoc-inputs/2023/07/input1.txt", true).score(true))                        // p2: 253253225
 }
 
+// dbg
 func (hh hands) dump() {
 	for i, h := range hh {
-		fmt.Println(i, string(h.cards), h.bid, h.strength())
+		fmt.Println(i+1, string(h.cards), h.bid, h.strength())
 	}
 }

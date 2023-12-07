@@ -16,7 +16,7 @@ var orders = map[rune]int{'2': 0, '3': 1, '4': 2, '5': 3, '6': 4, '7': 5, '8': 6
 type hand struct {
 	cards []rune
 	bid   int
-	j     bool
+	j     bool // count J as Jokers
 }
 
 // strength of a hand: 0 - highest card ... 6 - five of a kind
@@ -27,24 +27,21 @@ func (h hand) strength() int {
 	}
 
 	j := 0
-	if h.j {
-		if jokers, ok := g['J']; ok {
-			j = jokers
-			delete(g, 'J')
-		}
-
+	if jokers, ok := g['J']; h.j && ok {
+		j = jokers
+		delete(g, 'J')
 	}
 
 	s := maps.Values(g)
 	slices.Sort(s)
 	slices.Reverse(s)
+	// basically "SELECT card, COUNT(card) AS cards GROUP BY card ORDER BY cards DESC"
 
-	if h.j && j > 0 {
-		if len(s) > 0 {
-			s[0] += j
-		} else {
-			s = append(s, j)
+	if j > 0 {
+		if len(s) == 0 { // JJJJJ hand
+			s = append(s, 0)
 		}
+		s[0] += j
 	}
 
 	switch {

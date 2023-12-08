@@ -22,3 +22,9 @@ Brute force it baby! I'd like to, if I had time someday:
 
 ## [Day 06 - Wait for it](https://github.com/parMaster/advent-of-code/tree/main/2023/06-wait-for-it)
 The easiest day so far
+
+## [Day 07 - Camel Cards](https://github.com/parMaster/advent-of-code/tree/main/2023/07-camel-cards)
+Is this a Go way? Trying not to use Go as a C++ with garbage collector.
+
+## [Day 08 - Haunted Wasteland](https://github.com/parMaster/advent-of-code/tree/main/2023/08-haunted-wasteland)
+LCM and prime generator form scratch. First solution I got with an online LCM calculator and realized it's not brute forceable, so, in a way, if I was ok with cheating, I didn't even need to write the code, but it was a good exercise.

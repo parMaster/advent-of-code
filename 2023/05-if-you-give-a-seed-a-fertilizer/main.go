@@ -1,5 +1,9 @@
 package main
 
+/*
+date && go build -o torture && ./torture && date
+*/
+
 import (
 	"fmt"
 	"math"
@@ -139,3 +143,8 @@ func main() {
 	fmt.Println("Day 5: If You Give A Seed A Fertilizer \n\tPart One:", PartOne("../aoc-inputs/2023/05/input1.txt")) // 484023871
 	fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2023/05/input1.txt"))                                          // 46294175
 }
+
+// non-bruteforce solution is totally there, but since I'm havidng fun with multithreading,
+// bruteforce improvements:
+// - Worker pool of # of cores, instead of fan out
+// - Start the _longest_ ranges first

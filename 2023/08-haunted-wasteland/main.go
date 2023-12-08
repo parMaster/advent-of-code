@@ -22,16 +22,13 @@ func main() {
 	i := 0
 	c := "AAA" // current, start
 	dir := map[rune]int{'L': 0, 'R': 1}
-	for {
+	for c != "ZZZ" {
 		for _, move := range []rune(route) {
 			c = m[c][dir[move]]
 			i++
 			if c == "ZZZ" {
 				break
 			}
-		}
-		if c == "ZZZ" {
-			break
 		}
 	}
 	fmt.Println("Part One:", i) // 12737

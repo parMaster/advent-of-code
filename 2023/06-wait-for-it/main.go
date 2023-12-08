@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"os"
 	"regexp"
 	"strconv"
@@ -50,4 +51,16 @@ func PartTwo(file string) int64 {
 func main() {
 	fmt.Println("Day 6: Wait for it \n\tPart One:", PartOne("../aoc-inputs/2023/06/input1.txt")) // 500346
 	fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2023/06/input1.txt"))
+	fmt.Println("\tPart Two Solving quadratic equation:", PartTwoQuadratic("../aoc-inputs/2023/06/input1.txt"))
+}
+
+func PartTwoQuadratic(file string) int64 {
+	input, _ := os.ReadFile(file)
+	l := strings.Split(strings.TrimSpace(string(input)), "\n")
+
+	var re = regexp.MustCompile(`(?m)(\d+)`)
+	t, _ := strconv.ParseInt(strings.Join(re.FindAllString(l[0], -1), ""), 10, 64)
+	d, _ := strconv.ParseInt(strings.Join(re.FindAllString(l[1], -1), ""), 10, 64)
+
+	return int64((t*t+int64(math.Sqrt(float64(t*t-4*d))))/2) - int64((t*t-int64(math.Sqrt(float64(t*t-4*d))))/2)
 }

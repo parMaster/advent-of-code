@@ -40,7 +40,7 @@ func PartOne(f string) int {
 	return i
 }
 
-func PartTwo(f string) int {
+func PartTwo(f string, lcm func([]int) int) int {
 	results := []int{}
 	route, m := input(f)
 	for _, c := range maps.Keys(m) {
@@ -65,8 +65,9 @@ func PartTwo(f string) int {
 
 func main() {
 	fmt.Println("Day 8: Haunted Wasteland")
-	fmt.Println("\tPart One:", PartOne("../aoc-inputs/2023/08/input1.txt")) // 12737
-	fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2023/08/input1.txt")) // 9064949303801
+	fmt.Println("\tPart One:", PartOne("../aoc-inputs/2023/08/input1.txt"))                                  // 12737
+	fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2023/08/input1.txt", lcm))                             // 9064949303801
+	fmt.Println("\tPart Two (brute forcing LCM):", PartTwo("../aoc-inputs/2023/08/input1.txt", lcm_smartbf)) // 9064949303801
 }
 
 // Sieve of Eratosthenes
@@ -145,4 +146,34 @@ func lcm_bf(a []int) int {
 			fmt.Println(mr)
 		}
 	}
+}
+
+// smart bruteforcing LCM
+func lcm_smartbf(a []int) int {
+
+	n := 1
+	for i := range a {
+		n *= a[i]
+	}
+	mx := slices.Max(a)
+
+	i := 0
+	l := len(a)
+	for i = 1; i <= n; i++ {
+		div := 0
+		for j := range a {
+			if (mx*i)%a[j] == 0 {
+				div++
+			}
+		}
+		if div == l {
+			return mx * i
+		}
+		// debug print
+		// if i%100000000 == 0 {
+		// 	fmt.Println(i*mx, "of", n, "checked")
+		// }
+	}
+
+	return -0
 }

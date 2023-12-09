@@ -28,3 +28,6 @@ Is this a Go way? Trying not to use Go as a C++ with garbage collector.
 
 ## [Day 08 - Haunted Wasteland](https://github.com/parMaster/advent-of-code/tree/main/2023/08-haunted-wasteland)
 LCM and prime generator form scratch. First solution I got with an online LCM calculator and realized it's not brute forceable, so, in a way, if I was ok with cheating, I didn't even need to write the code, but it was a good exercise.
+
+## [Day 09 - Mirage Maintenance](https://github.com/parMaster/advent-of-code/tree/main/2023/09-mirage-maintenance)
+Is that it? Ok, I'll take it.

@@ -13,6 +13,6 @@ func TestPredict(t *testing.T) {
 }
 
 func TestSolve(t *testing.T) {
-	require.Equal(t, 1921197370, solve("../aoc-inputs/2023/09/input.txt", predict))
-	require.Equal(t, 1124, solve("../aoc-inputs/2023/09/input.txt", predict_past))
+	require.Equal(t, 1921197370, solve("../aoc-inputs/2023/09/input.txt", false))
+	require.Equal(t, 1124, solve("../aoc-inputs/2023/09/input.txt", true))
 }

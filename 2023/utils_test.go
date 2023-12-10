@@ -17,9 +17,10 @@ import (
 // directions	0 1 2 3 4 5 6 7
 var dir = []image.Point{{-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}}
 
-var xyDir = [][]int{{0, -1}, {-1, 0}, {1, 0}, {0, 1}}
-
-var diagDir = [][]int{{-1, -1}, {1, -1}, {-1, 1}, {1, 1}}
+// directions	↑ → ↓ ←
+// directions	0 1 2 3
+var xyDir = []image.Point{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
+var diagDir = []image.Point{{-1, -1}, {1, -1}, {-1, 1}, {1, 1}}
 
 // Nifty tricks that always same but different
 // partially stolen, because I'm not this clever

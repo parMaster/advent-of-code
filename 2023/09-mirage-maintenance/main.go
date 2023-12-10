@@ -9,7 +9,7 @@ import (
 )
 
 func predict(a []int) int {
-	if m := slices.Max(a); m == 0 && slices.Max(a) == slices.Min(a) {
+	if slices.Max(a) == 0 && slices.Min(a) == 0 {
 		return 0
 	}
 

@@ -236,10 +236,10 @@ func showLoop(loop map[image.Point]int) {
 				continue
 			}
 			if v == 0 {
-				fmt.Print(".")
+				fmt.Print("░")
 				continue
 			}
-			fmt.Print("#")
+			fmt.Print("█")
 		}
 		fmt.Println()
 	}

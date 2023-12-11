@@ -35,5 +35,5 @@ Is that it? Ok, I'll take it.
 ## [Day 10 - Pipe Maze](https://github.com/parMaster/advent-of-code/tree/main/2023/10-pipe-maze)
 Another one brutal punch in the groin. It took me too long to do it, even after spoiling part two with a subreddit meme, it took so much time and attention to get it right. The code is too long and ugly, I'm sure it can be solved in a much more elegant way, but I'll take it, it works with no cheating like painting the map in a paint program and counting the pixels, and it vomits a lot of visuals.
 
-## [Day 11 - Cosmic Expansion](https://github.com/parMaster/advent-of-code/tree/main/2023/10-cosmic-expansion)
+## [Day 11 - Cosmic Expansion](https://github.com/parMaster/advent-of-code/tree/main/2023/11-cosmic-expansion)
 Took a couple hours to make "expansion" part right, used image.Point to do coordinates math, which gave correct distance value, so all it took is to correctly read and expand the map. Part two was an additional parameter to the read function, that's it. A couple of functions for coordinates math from previous days happened to be useful.

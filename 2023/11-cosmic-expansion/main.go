@@ -111,7 +111,7 @@ func solve(f string, expansion int) int {
 }
 
 func main() {
-	fmt.Println("Day 10: Pipe Maze")
+	fmt.Println("Day 11: Cosmic Expansion")
 	fmt.Println("\tPart One:", solve("../aoc-inputs/2023/11/input1.txt", 1))         // 10154062
 	fmt.Println("\tPart Two:", solve("../aoc-inputs/2023/11/input1.txt", 1000000-1)) // 553083047914
 }

@@ -37,3 +37,6 @@ Another one brutal punch in the groin. It took me too long to do it, even after 
 
 ## [Day 11 - Cosmic Expansion](https://github.com/parMaster/advent-of-code/tree/main/2023/11-cosmic-expansion)
 Took a couple hours to make "expansion" part right, used image.Point to do coordinates math, which gave correct distance value, so all it took is to correctly read and expand the map. Part two was an additional parameter to the read function, that's it. A couple of functions for coordinates math from previous days happened to be useful.
+
+## [Day 12 - Hot Springs (p1 only)](https://github.com/parMaster/advent-of-code/tree/main/2023/12-hot-springs)
+Part one solved with a recursive brute force, part two left for better days...

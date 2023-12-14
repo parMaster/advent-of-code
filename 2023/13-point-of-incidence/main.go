@@ -35,30 +35,15 @@ func read(f string) (sets []set) {
 	return sets
 }
 
-// returns true if a slice of lines can be folded in the middle
-func reflected(lines []string) bool {
-	if len(lines)%2 != 0 || len(lines) == 0 {
-		return false
-	}
-
-	for i := range lines[:len(lines)/2] {
-		if lines[i] != lines[len(lines)-1-i] {
-			return false
-		}
-	}
-
-	return true
-}
-
-func findMirrors(s []string) map[int]bool {
+func findMirrors(s []string, smudgesAllowed int) map[int]bool {
 	mirrors := map[int]bool{}
 	for i := range s {
-		if reflected(s[0:i]) {
+		if reflected(s[0:i], smudgesAllowed) {
 			mirrors[(i+1)/2] = true
 			// fmt.Println(0, "x", i)
 		}
 
-		if reflected(s[i:]) {
+		if reflected(s[i:], smudgesAllowed) {
 			mirrors[len(s)-(len(s)-i)/2] = true
 			// fmt.Println(i, "x", len(s))
 		}
@@ -67,26 +52,45 @@ func findMirrors(s []string) map[int]bool {
 	return mirrors
 }
 
-func p1(f string) int {
+// returns true if a slice of lines can be folded in the middle
+// considering number of smudges that allowed for the whole pattern (O..n)
+func reflected(lines []string, smudgesAllowed int) bool {
+	if len(lines)%2 != 0 || len(lines) == 0 {
+		return false
+	}
+
+	smudges := 0
+	for i := range lines[:len(lines)/2] {
+		l1 := lines[i]
+		l2 := lines[len(lines)-1-i]
+		for li := range l1 {
+			if l1[li] != l2[li] {
+				smudges++
+			}
+		}
+	}
+
+	return smudgesAllowed == smudges
+}
+
+func solve(f string, smudgesAllowed int) int {
 	sets := read(f)
 	sum := 0
 	for _, s := range sets {
-		m := findMirrors(s.lines)
+		m := findMirrors(s.lines, smudgesAllowed)
 		for _, r := range maps.Keys(m) {
 			sum += r * 100
 		}
-		// fmt.Println(m)
-		m = findMirrors(s.cols)
+		m = findMirrors(s.cols, smudgesAllowed)
 		for _, r := range maps.Keys(m) {
 			sum += r
 		}
-		// fmt.Println(m)
 	}
-	// fmt.Println(sum)
 	return sum
 }
 
 func main() {
 	fmt.Println("Day 13: Point of Incidence")
-	fmt.Println("\tPart One:", p1("../aoc-inputs/2023/13/input.txt")) // 36041
+	fmt.Println("\tPart One:", solve("../aoc-inputs/2023/13/input.txt", 0)) // 36041
+	fmt.Println("\tPart Two:", solve("../aoc-inputs/2023/13/input.txt", 1)) // 35915
 }

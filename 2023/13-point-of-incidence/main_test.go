@@ -46,8 +46,13 @@ func TestReflected(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			actual := reflected(tc.lines)
+			actual := reflected(tc.lines, 0)
 			require.Equal(t, tc.expected, actual, tc.name)
 		})
 	}
+
+	// one smudge, which is allowed
+	require.True(t, reflected([]string{".#.", "###", "###", "..."}, 1))
+	// not two
+	require.False(t, reflected([]string{".#.", "###", "###", "..."}, 2))
 }

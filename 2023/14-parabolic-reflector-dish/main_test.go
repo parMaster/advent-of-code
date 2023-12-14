@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"slices"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -12,28 +10,19 @@ import (
 func TestSort(t *testing.T) {
 
 	s := []byte("O..O..")
+
 	slices.Sort(s)
 	slices.Reverse(s)
-
 	sorted := []byte("OO....")
 	require.Equal(t, sorted, s)
 
-	reduced := []byte("OO")
 	s = slices.DeleteFunc(s, func(e byte) bool { return e == byte('.') })
+	reduced := []byte("OO")
 	require.Equal(t, reduced, s)
-	// gotcha
-	// len(s)
 
 	s = []byte(".O.#O..O")
-	sl := len(s)
-	for _, part := range strings.Split(string(s), "#") {
-		pp := []byte(part)
-		slices.Sort(pp)
-		slices.Reverse(pp)
-		s = slices.DeleteFunc(pp, func(e byte) bool { return e == byte('.') })
-		rocks := len(s)
-		dots := len(pp) - rocks
-		fmt.Println(s, sl, rocks, dots)
-	}
+	//          87654321
+	//.O.#O..O->O..#OO.. = 8+4+3 = 15
+	require.Equal(t, 15, shift(s))
 
 }

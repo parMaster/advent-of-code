@@ -30,7 +30,7 @@ func cycle(field field, w, h int) field {
 	var dots, rocks int
 	// fmt.Println("North")
 	for x := 0; x <= w; x++ {
-		// down every column
+		// down each column
 		cur := image.Pt(x, 0)
 		for y := 0; y <= h; y++ {
 			if field[image.Point{x, y}] == '.' {
@@ -83,7 +83,7 @@ func cycle(field field, w, h int) field {
 	// show(field, w, h)
 	// fmt.Println("South")
 	for x := 0; x <= w; x++ {
-		// down every column
+		// down each column
 		cur := image.Pt(x, 0)
 		for y := 0; y <= h; y++ {
 			if field[image.Point{x, y}] == '.' {
@@ -109,7 +109,7 @@ func cycle(field field, w, h int) field {
 	// show(field, w, h)
 	// fmt.Println("East")
 	for y := 0; y <= h; y++ {
-		// down every column
+		// right each row
 		cur := image.Pt(0, y)
 		for x := 0; x <= w; x++ {
 			if field[image.Point{x, y}] == '.' {
@@ -146,6 +146,7 @@ func totalLoad(field field, w, h int) (sum int) {
 	return
 }
 
+// image -> string
 func flatten(f field, w, h int) (s string) {
 	for y := 0; y <= h; y++ {
 		for x := 0; x <= w; x++ {
@@ -161,24 +162,24 @@ func p2(f string) int {
 	// show(field, w, h)
 	var cache []string
 
-	c := 0
-	ix := 0
+	cycleEnd := 0
+	cycleStart := 0
 	for {
 		field := cycle(field, w, h)
 		flat := flatten(field, w, h)
 		if slices.Contains(cache, flat) {
-			ix = slices.Index(cache, flat)
+			cycleStart = slices.Index(cache, flat)
 			break
 		}
 		cache = append(cache, flat)
-		c++
+		cycleEnd++
 	}
 
-	// fmt.Println("Cycle found after", c, "iterations - ", ix, "was the same")
-	// fmt.Println("1'000'000'000-", ix, "%", c, "-", ix, " = ", (1000000000-ix)/(c-ix))
+	// fmt.Println("Cycle found after", cycleEnd, "iterations - ", cycleStart, "was the same")
+	// fmt.Println("1'000'000'000-", cycleStart, "%", cycleEnd, "-", cycleStart, " = ", (1e9-cycleStart)/(cycleEnd-cycleStart))
 
 	field, w, h = read(string(in))
-	for i := 0; i < 1000000000-((1000000000-ix)/(c-ix))*(c-ix); i++ { // skipping as many cycles as we can
+	for i := 0; i < 1e9-((1e9-cycleStart)/(cycleEnd-cycleStart))*(cycleEnd-cycleStart); i++ { // skipping as many cycles as we can
 		field = cycle(field, w, h)
 	}
 

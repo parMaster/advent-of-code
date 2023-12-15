@@ -32,6 +32,9 @@ LCM and prime generator form scratch. First solution I got with an online LCM ca
 ## [Day 09 - Mirage Maintenance](https://github.com/parMaster/advent-of-code/tree/main/2023/09-mirage-maintenance)
 Is that it? Ok, I'll take it.
 
+Also available in [JS](https://github.com/parMaster/advent-of-code/tree/main/2023/09-mirage-maintenance/main.js).
+I like these .every and .reduce thingies.
+
 ## [Day 10 - Pipe Maze](https://github.com/parMaster/advent-of-code/tree/main/2023/10-pipe-maze)
 Another one brutal punch in the groin. It took me too long to do it, even after spoiling part two with a subreddit meme, it took so much time and attention to get it right. The code is too long and ugly, I'm sure it can be solved in a much more elegant way, but I'll take it, it works with no cheating like painting the map in a paint program and counting the pixels, and it vomits a lot of visuals.
 
@@ -48,4 +51,6 @@ Pretty straightforward solution, just a couple of well-tested functions, combine
 After solving Part One with naive string manipulation, for Part Two it was necessary to bring big guns - DP. quickly refactored slice of string to the map of coordinates, didn't bother refactoring four practically identical copy-pasted pieces of code. It was obvious that there should be a cycle, so it was a matter of serializing the matrix and saving to cache, then detect cycle lenght and skip all the iterations in between. Pretty obvious, but requires attention and time to implement.
 
 ## [Day 15 - Lens Library](https://github.com/parMaster/advent-of-code/tree/main/2023/15-lens-library)
-It's just a translation of the problem description into code. One run = one star
+It's just a translation of the problem description into code. One run = one star.
+
+Also available in [JS](https://github.com/parMaster/advent-of-code/tree/main/2023/15-lens-library/index.js). It's so unbelievably hard to write JS after Go - no types, always guessing what's the type of the variable. Still know very little even about the basics of (V8)JS, but it's fun to learn. Map() apparently is a linked hash map, so it's easy to iterate over it in the insertion order, which saved one for-loop compared to Go version.

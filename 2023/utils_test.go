@@ -41,6 +41,40 @@ func Test_Commons(t *testing.T) {
 	require.EqualValues(t, []string{"0", "14", "13", "4", "55", "6", "777"}, re.FindAllString(s, -1))
 }
 
+type field map[image.Point]rune
+
+func readField(in string) (m field, w int, h int) {
+	m = make(map[image.Point]rune)
+	for y, l := range strings.Split(strings.TrimSpace(string(in)), "\n") {
+		w = len(l) - 1
+		h = y
+		for x, r := range strings.TrimSpace(l) {
+			m[image.Point{x, y}] = r
+		}
+	}
+	return
+}
+
+func (f field) show(w, h int) {
+	fmt.Println(w+1, "x", h+1, ":")
+	for y := 0; y <= h; y++ {
+		for x := 0; x <= w; x++ {
+			fmt.Print(string(f[image.Pt(x, y)]))
+		}
+		fmt.Println()
+	}
+	fmt.Println()
+}
+
+func (f field) flatten(w, h int) (s string) {
+	for y := 0; y <= h; y++ {
+		for x := 0; x <= w; x++ {
+			s += string(f[image.Pt(x, y)])
+		}
+	}
+	return
+}
+
 func absPoint(d image.Point) image.Point {
 	if d.X < 0 {
 		d.X = -d.X

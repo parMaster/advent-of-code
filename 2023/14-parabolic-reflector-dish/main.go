@@ -2,81 +2,238 @@ package main
 
 import (
 	"fmt"
+	"image"
 	"os"
 	"slices"
 	"strings"
 )
 
-type set struct {
-	lines []string
-	cols  []string
-}
+type field map[image.Point]rune
 
-func read(in string) set {
-	lines := []string{}
-	cols := []string{}
+// directions	↑ ← ↓ →
+// directions	0 1 2 3
+var xyDir = []image.Point{{0, -1}, {-1, 0}, {0, 1}, {1, 0}}
 
-	lines = strings.Split(strings.TrimSpace(string(in)), "\n")
-	for i := range lines {
-		for j, c := range lines[i] {
-			if len(cols) == 0 {
-				cols = make([]string, len(lines[i]))
-			}
-			cols[j] += string(c)
+func read(in string) (m field, w int, h int) {
+	m = make(map[image.Point]rune)
+	for y, l := range strings.Split(strings.TrimSpace(string(in)), "\n") {
+		w = len(l) - 1
+		h = y
+		for x, r := range strings.TrimSpace(l) {
+			m[image.Point{x, y}] = r
 		}
 	}
-	return set{lines: lines, cols: cols}
+	return
 }
 
-func shift(s []byte) int {
-	w := 0
-	total := len(s)
-	for _, part := range strings.Split(strings.TrimSpace(string(s)), "#") {
-		pp := []byte(part)
-		if len(pp) != 0 {
-			slices.Sort(pp)
-			slices.Reverse(pp)
-			s = slices.DeleteFunc(pp, func(e byte) bool { return e == byte('.') })
-			// rocks := len(s)
-			// dots := len(pp) - rocks
-		}
-
-		for _, p := range pp {
-			if p == byte('O') {
-				w += total
+func cycle(field field, w, h int) field {
+	var dots, rocks int
+	// fmt.Println("North")
+	for x := 0; x <= w; x++ {
+		// down every column
+		cur := image.Pt(x, 0)
+		for y := 0; y <= h; y++ {
+			if field[image.Point{x, y}] == '.' {
+				dots++
+			} else if field[image.Point{x, y}] == 'O' {
+				rocks++
 			}
-			total--
-			fmt.Print(string(p))
+			if field[image.Point{x, y}] == '#' || y == h {
+				for i := 0; i < rocks; i++ {
+					field[cur] = 'O'
+					cur = cur.Add(xyDir[2])
+				}
+				for i := 0; i < dots; i++ {
+					field[cur] = '.'
+					cur = cur.Add(xyDir[2])
+				}
+				cur = cur.Add(xyDir[2])
+
+				dots, rocks = 0, 0
+			}
 		}
-		total--
-		fmt.Print("#")
-		// OOOO.#.O.. 10
-		// OO..#....#  9
-		// OO..O##..O  8
-		// O..#.OO...  7
-		// ........#.  6
-		// ..#....#.#  5
-		// ..O..#.O.O  4
-		// ..O.......  3
-		// #....###..  2
-		// #....#....  1
-		// fmt.Println(string(s), total, w)
 	}
-	fmt.Println()
-	return w
+	// show(field, w, h)
+
+	// fmt.Println("West")
+	for y := 0; y <= h; y++ {
+		cur := image.Pt(0, y)
+		// right each row
+		for x := 0; x <= w; x++ {
+			if field[image.Point{x, y}] == '.' {
+				dots++
+			} else if field[image.Point{x, y}] == 'O' {
+				rocks++
+			}
+			if field[image.Point{x, y}] == '#' || x == w {
+				for i := 0; i < rocks; i++ {
+					field[cur] = 'O'
+					cur = cur.Add(xyDir[3])
+				}
+				for i := 0; i < dots; i++ {
+					field[cur] = '.'
+					cur = cur.Add(xyDir[3])
+				}
+				cur = cur.Add(xyDir[3])
+
+				dots, rocks = 0, 0
+			}
+		}
+	}
+	// show(field, w, h)
+	// fmt.Println("South")
+	for x := 0; x <= w; x++ {
+		// down every column
+		cur := image.Pt(x, 0)
+		for y := 0; y <= h; y++ {
+			if field[image.Point{x, y}] == '.' {
+				dots++
+			} else if field[image.Point{x, y}] == 'O' {
+				rocks++
+			}
+			if field[image.Point{x, y}] == '#' || y == h {
+				for i := 0; i < dots; i++ {
+					field[cur] = '.'
+					cur = cur.Add(xyDir[2])
+				}
+				for i := 0; i < rocks; i++ {
+					field[cur] = 'O'
+					cur = cur.Add(xyDir[2])
+				}
+				cur = cur.Add(xyDir[2])
+
+				dots, rocks = 0, 0
+			}
+		}
+	}
+	// show(field, w, h)
+	// fmt.Println("East")
+	for y := 0; y <= h; y++ {
+		// down every column
+		cur := image.Pt(0, y)
+		for x := 0; x <= w; x++ {
+			if field[image.Point{x, y}] == '.' {
+				dots++
+			} else if field[image.Point{x, y}] == 'O' {
+				rocks++
+			}
+			if field[image.Point{x, y}] == '#' || x == w {
+				for i := 0; i < dots; i++ {
+					field[cur] = '.'
+					cur = cur.Add(xyDir[3])
+				}
+				for i := 0; i < rocks; i++ {
+					field[cur] = 'O'
+					cur = cur.Add(xyDir[3])
+				}
+				cur = cur.Add(xyDir[3])
+
+				dots, rocks = 0, 0
+			}
+		}
+	}
+	return field
 }
 
-func solve(f string) int {
+func totalLoad(field field, w, h int) (sum int) {
+	for x := 0; x <= w; x++ {
+		for y := 0; y <= h; y++ {
+			if field[image.Point{x, y}] == 'O' {
+				sum += h - y + 1
+			}
+		}
+	}
+	return
+}
+
+func flatten(f field, w, h int) (s string) {
+	for y := 0; y <= h; y++ {
+		for x := 0; x <= w; x++ {
+			s += string(f[image.Pt(x, y)])
+		}
+	}
+	return
+}
+
+func p2(f string) int {
 	in, _ := os.ReadFile(f)
-	sum := 0
-	for _, s := range read(string(in)).cols {
-		sum += shift([]byte(s))
+	field, w, h := read(string(in))
+	// show(field, w, h)
+	var cache []string
+
+	c := 0
+	ix := 0
+	for {
+		field := cycle(field, w, h)
+		flat := flatten(field, w, h)
+		if slices.Contains(cache, flat) {
+			ix = slices.Index(cache, flat)
+			break
+		}
+		cache = append(cache, flat)
+		c++
 	}
-	return sum
+
+	// fmt.Println("Cycle found after", c, "iterations - ", ix, "was the same")
+	// fmt.Println("1'000'000'000-", ix, "%", c, "-", ix, " = ", (1000000000-ix)/(c-ix))
+
+	field, w, h = read(string(in))
+	for i := 0; i < 1000000000-((1000000000-ix)/(c-ix))*(c-ix); i++ { // skipping as many cycles as we can
+		field = cycle(field, w, h)
+	}
+
+	// show(field, w, h)
+	load := totalLoad(field, w, h)
+	return load
+}
+
+func p1(f string) int {
+	in, _ := os.ReadFile(f)
+	field, w, h := read(string(in))
+
+	var dots, rocks int
+	// fmt.Println("North")
+	for x := 0; x <= w; x++ {
+		// down every column
+		cur := image.Pt(x, 0)
+		for y := 0; y <= h; y++ {
+			if field[image.Point{x, y}] == '.' {
+				dots++
+			} else if field[image.Point{x, y}] == 'O' {
+				rocks++
+			}
+			if field[image.Point{x, y}] == '#' || y == h {
+				for i := 0; i < rocks; i++ {
+					field[cur] = 'O'
+					cur = cur.Add(xyDir[2])
+				}
+				for i := 0; i < dots; i++ {
+					field[cur] = '.'
+					cur = cur.Add(xyDir[2])
+				}
+				cur = cur.Add(xyDir[2])
+
+				dots, rocks = 0, 0
+			}
+		}
+	}
+
+	return totalLoad(field, w, h)
 }
 
 func main() {
 	fmt.Println("Day 14: Parabolic Reflector Dish")
-	fmt.Println("\tPart One:", solve("../aoc-inputs/2023/14/input.txt")) //
-	// fmt.Println("\tPart Two:", solve("../aoc-inputs/2023/14/input.txt", 1)) //
+	fmt.Println("\tPart One:", p1("../aoc-inputs/2023/14/input.txt")) // 108840
+	fmt.Println("\tPart Two:", p2("../aoc-inputs/2023/14/input.txt")) // 103445
+}
+
+func show(m map[image.Point]rune, w, h int) {
+	fmt.Println(w+1, "x", h+1, ":")
+	for y := 0; y <= h; y++ {
+		for x := 0; x <= w; x++ {
+			fmt.Print(string(m[image.Pt(x, y)]))
+		}
+		fmt.Println()
+	}
+	fmt.Println()
 }

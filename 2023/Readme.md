@@ -40,3 +40,9 @@ Took a couple hours to make "expansion" part right, used image.Point to do coord
 
 ## [Day 12 - Hot Springs (p1 only)](https://github.com/parMaster/advent-of-code/tree/main/2023/12-hot-springs)
 Part one solved with a recursive brute force, part two left for better days...
+
+## [Day 13 - Point of Incidence](https://github.com/parMaster/advent-of-code/tree/main/2023/13-point-of-incidence)
+Pretty straightforward solution, just a couple of well-tested functions, combined together. Nothing fancy, one run = one star.
+
+## [Day 14 - Parabolic Reflector Dish](https://github.com/parMaster/advent-of-code/tree/main/2023/14-parabolic-reflector-dish)
+After solving Part One with naive string manipulation, for Part Two it was necessary to bring big guns - DP. quickly refactored slice of string to the map of coordinates, didn't bother refactoring four practically identical copy-pasted pieces of code. It was obvious that there should be a cycle, so it was a matter of serializing the matrix and saving to cache, then detect cycle lenght and skip all the iterations in between. Pretty obvious, but requires attention and time to implement.

@@ -54,3 +54,6 @@ After solving Part One with naive string manipulation, for Part Two it was neces
 It's just a translation of the problem description into code. One run = one star.
 
 Also available in [JS](https://github.com/parMaster/advent-of-code/tree/main/2023/15-lens-library/index.js). It's so unbelievably hard to write JS after Go - no types, always guessing what's the type of the variable. Still know very little even about the basics of (V8)JS, but it's fun to learn. Map() apparently is a linked hash map, so it's easy to iterate over it in the insertion order, which saved one for-loop compared to Go version.
+
+## [Day 16 - The floor will be lava](https://github.com/parMaster/advent-of-code/tree/main/2023/16-the-floor-will-be-lava)
+Coordinates math, again. I'm glad I had a functions for that already. The rest is just a matter of reading the problem description and translating it into code.

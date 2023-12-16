@@ -39,9 +39,6 @@ type Beam struct {
 	dir image.Point
 }
 
-// visited[position]dirrections to check cycles and count answer
-var visited map[image.Point][]image.Point = map[image.Point][]image.Point{}
-
 type Field map[image.Point]rune
 
 func read(in string) (m Field, w int, h int) {
@@ -56,12 +53,11 @@ func read(in string) (m Field, w int, h int) {
 	return
 }
 
-// Part one without recursion
-func p1(f string) int {
-	in, _ := os.ReadFile(f)
-	field, w, h := read(string(in))
-
-	var beams = []Beam{{pos: image.Point{0, 0}, dir: xyDir[1]}}
+func shine(field Field, w, h int, beam Beam) int {
+	// visited[position]dirrections to check cycles and count answer
+	var visited map[image.Point][]image.Point = map[image.Point][]image.Point{}
+	// starting beam
+	var beams = []Beam{beam}
 	progressed := true
 	for progressed {
 		progressed = false
@@ -99,8 +95,34 @@ func p1(f string) int {
 	return len(visited)
 }
 
+// Part one without recursion
+func p1(f string) int {
+	in, _ := os.ReadFile(f)
+	field, w, h := read(string(in))
+	return shine(field, w, h, Beam{pos: image.Point{0, 0}, dir: xyDir[1]})
+}
+
+// Part two is just bruteforcing with part one
+func p2(f string) int {
+	maxCoverage := 0
+	in, _ := os.ReadFile(f)
+	field, w, h := read(string(in))
+
+	for x := 0; x < w; x++ {
+		maxCoverage = max(maxCoverage, shine(field, w, h, Beam{pos: image.Point{x, 0}, dir: xyDir[2]}))
+		maxCoverage = max(maxCoverage, shine(field, w, h, Beam{pos: image.Point{x, h}, dir: xyDir[0]}))
+	}
+
+	for y := 0; y < h; y++ {
+		maxCoverage = max(maxCoverage, shine(field, w, h, Beam{pos: image.Point{0, y}, dir: xyDir[1]}))
+		maxCoverage = max(maxCoverage, shine(field, w, h, Beam{pos: image.Point{w, y}, dir: xyDir[3]}))
+	}
+
+	return maxCoverage
+}
+
 func main() {
 	fmt.Println("Day 16: The floor will be lava")
 	fmt.Println("\tPart One:", p1("../aoc-inputs/2023/16/input.txt")) // 6795
-	// fmt.Println("\tPart Two:", p2("../aoc-inputs/2023/16/input.txt")) //
+	fmt.Println("\tPart Two:", p2("../aoc-inputs/2023/16/input.txt")) // 7154
 }

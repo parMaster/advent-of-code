@@ -9,29 +9,28 @@ import (
 )
 
 // directions	↑ → ↓ ←
-// directions	0 1 2 3
-var xyDir = []image.Point{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
+var up, right, down, left = image.Point{0, -1}, image.Point{1, 0}, image.Point{0, 1}, image.Point{-1, 0}
 
 // new direction == reflects[mirror][current direction]
 var reflects = map[rune]map[image.Point]image.Point{
 	'/': {
-		xyDir[0]: xyDir[1],
-		xyDir[1]: xyDir[0],
-		xyDir[2]: xyDir[3],
-		xyDir[3]: xyDir[2],
+		up:    right,
+		right: up,
+		down:  left,
+		left:  down,
 	},
 	'\\': {
-		xyDir[0]: xyDir[3],
-		xyDir[1]: xyDir[2],
-		xyDir[3]: xyDir[0],
-		xyDir[2]: xyDir[1],
+		up:    left,
+		right: down,
+		left:  up,
+		down:  right,
 	},
 }
 
 // []directions == forks[-|]
 var forks = map[rune][]image.Point{
-	'-': {xyDir[1], xyDir[3]},
-	'|': {xyDir[0], xyDir[2]},
+	'-': {right, left},
+	'|': {up, down},
 }
 
 type Beam struct {
@@ -99,7 +98,7 @@ func shine(field Field, w, h int, beam Beam) int {
 func p1(f string) int {
 	in, _ := os.ReadFile(f)
 	field, w, h := read(string(in))
-	return shine(field, w, h, Beam{pos: image.Point{0, 0}, dir: xyDir[1]})
+	return shine(field, w, h, Beam{pos: image.Point{0, 0}, dir: right})
 }
 
 // Part two is just bruteforcing with part one
@@ -109,13 +108,13 @@ func p2(f string) int {
 	field, w, h := read(string(in))
 
 	for x := 0; x < w; x++ {
-		maxCoverage = max(maxCoverage, shine(field, w, h, Beam{pos: image.Point{x, 0}, dir: xyDir[2]}))
-		maxCoverage = max(maxCoverage, shine(field, w, h, Beam{pos: image.Point{x, h}, dir: xyDir[0]}))
+		maxCoverage = max(maxCoverage, shine(field, w, h, Beam{pos: image.Point{x, 0}, dir: down}))
+		maxCoverage = max(maxCoverage, shine(field, w, h, Beam{pos: image.Point{x, h}, dir: up}))
 	}
 
 	for y := 0; y < h; y++ {
-		maxCoverage = max(maxCoverage, shine(field, w, h, Beam{pos: image.Point{0, y}, dir: xyDir[1]}))
-		maxCoverage = max(maxCoverage, shine(field, w, h, Beam{pos: image.Point{w, y}, dir: xyDir[3]}))
+		maxCoverage = max(maxCoverage, shine(field, w, h, Beam{pos: image.Point{0, y}, dir: right}))
+		maxCoverage = max(maxCoverage, shine(field, w, h, Beam{pos: image.Point{w, y}, dir: left}))
 	}
 
 	return maxCoverage

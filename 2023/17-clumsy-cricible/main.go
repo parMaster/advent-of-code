@@ -19,6 +19,9 @@ var moves map[rune]image.Point = map[rune]image.Point{
 var backwards map[rune]rune = map[rune]rune{
 	'R': 'L', 'L': 'R', 'U': 'D', 'D': 'U',
 }
+var cross map[rune][]rune = map[rune][]rune{
+	'R': {'D', 'U'}, 'L': {'D', 'U'}, 'D': {'L', 'R'}, 'U': {'L', 'R'},
+}
 
 func read(in string) (m Field, w int, h int) {
 	m = make(Field)
@@ -34,8 +37,8 @@ func read(in string) (m Field, w int, h int) {
 
 func main() {
 	fmt.Println("Day 17: Clumsy Crucible")
-	fmt.Println("\tPart One:", p1("../aoc-inputs/2023/17/input.txt")) // 785
-	// fmt.Println("\tPart Two:", p2("../aoc-inputs/2023/17/input.txt")) //
+	fmt.Println("\tPart One:", dijkstra("../aoc-inputs/2023/17/input.txt", 3, 0))  // 785
+	fmt.Println("\tPart Two:", dijkstra("../aoc-inputs/2023/17/input.txt", 10, 4)) // 922
 }
 
 type Field map[image.Point]int
@@ -60,35 +63,49 @@ type Item struct {
 // A PriorityQueue implements heap.Interface and holds Items.
 type PriorityQueue []*Item
 
-func p1(file string) int {
+func dijkstra(file string, maxConsecutiveSteps int, minStepsToTurn int) int {
 	results := []int{}
 
 	in, _ := os.ReadFile(file)
 	f, w, h = read(string(in))
 	// show(f, w, h)
 
+	itemD := &Item{
+		score: 0,
+		key: Key{
+			point: image.Point{0, 0},
+			dir:   'D',
+		},
+		index: 0,
+	}
 	itemR := &Item{
 		score: 0,
 		key: Key{
 			point: image.Point{0, 0},
-			dir:   'R', // it seems to be enough to have only one starting key, 'D' is redundant?
+			dir:   'R',
 		},
 		index: 0,
 	}
-	dist := map[Key]int{itemR.key: 0}
+	dist := map[Key]int{itemR.key: 0, itemD.key: 0}
 	pq := make(PriorityQueue, 0)
 	heap.Init(&pq)
 	heap.Push(&pq, itemR)
+	heap.Push(&pq, itemD)
 
 	for pq.Len() > 0 {
 		item := heap.Pop(&pq).(*Item)
 
-		if item.key.point == image.Pt(w, h) {
-			// fmt.Println("Reached ", w, "X", h, " with score:", item.score)
+		if item.key.point == image.Pt(w, h) && item.key.steps >= minStepsToTurn {
+			// fmt.Println("Reached ", w, "X", h, " with score:", item.score, item.key.steps)
 			results = append(results, item.score)
 		}
 
 		for _, dir := range []rune{'U', 'D', 'R', 'L'} {
+			// item.key.steps must be at least 4 to allow changing direction
+			if item.key.steps < minStepsToTurn && item.key.dir != dir {
+				continue
+			}
+
 			pos := item.key.point.Add(moves[dir])
 
 			// (?) in bounds
@@ -102,7 +119,7 @@ func p1(file string) int {
 			}
 
 			// fourth step in the same direction
-			if steps == 4 {
+			if steps == maxConsecutiveSteps+1 {
 				continue
 			}
 

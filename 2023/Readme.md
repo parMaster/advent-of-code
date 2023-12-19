@@ -57,3 +57,10 @@ Also available in [JS](https://github.com/parMaster/advent-of-code/tree/main/202
 
 ## [Day 16 - The floor will be lava](https://github.com/parMaster/advent-of-code/tree/main/2023/16-the-floor-will-be-lava)
 Coordinates math, again. I'm glad I had a functions for that already. The rest is just a matter of reading the problem description and translating it into code.
+
+## [Day 17 - Clumsy Crucible](https://github.com/parMaster/advent-of-code/tree/main/2023/17-clumsy-crucible)
+First part traditionally - naive method (flood-fill and count everything), to see the second part, which was insane. Implemented Dijkstra pretty fast, but stuck for hours, unable to imagine the 4-D solution space and even think of a composite key for priority queue, to avoid overwriting the same cell with different values. Finally, I gave up and looked at the subreddit, where I found a discussion of a composite array, which was a good hint. Couldn't stop before got the second star.
+
+## [Day 18 - Lavaduct Lagoon](https://github.com/parMaster/advent-of-code/tree/main/2023/18-lavaduct-lagoon)
+This is really not fair. I've spent my day inventing the rendering algorithm for the second part, wrote a metric shitton of code and tapped out - got to the reddit, saw two keywords, read two wiki articles and got the solution which was a stupid formula, no iterations, no coordinate math, no debugging, no nothing, just "if you know, you know". Should've I spent some time researching first? At least googling something like "area of the polygon". Though, I'm surprised that the area of the polygon can be calculated with a simple formula, I thought it's a complex problem. [I'll just leave it here for later, maybe I'll need this ray-tracing algorithm someday.](https://www.reddit.com/r/adventofcode/comments/18l25ks/comment/kdv3lqz/?utm_source=share&utm_medium=web2x&context=3)
+

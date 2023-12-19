@@ -22,6 +22,8 @@ var dir = []image.Point{{-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1,
 var xyDir = []image.Point{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
 var diagDir = []image.Point{{-1, -1}, {1, -1}, {-1, 1}, {1, 1}}
 
+var asciiBlocks = map[string]string{"full": "██", "half": "▒▒", "empty": "░░"}
+
 // Nifty tricks that always same but different
 // partially stolen, because I'm not this clever
 func Test_Commons(t *testing.T) {

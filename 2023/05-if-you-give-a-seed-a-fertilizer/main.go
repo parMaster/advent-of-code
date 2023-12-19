@@ -143,7 +143,7 @@ func main() {
 	args := os.Args[1:]
 	fmt.Println("Day 5: If You Give A Seed A Fertilizer")
 	fmt.Println("\tPart One:", PartOne("../aoc-inputs/2023/05/input1.txt")) // 484023871
-	if len(args) > 0 && args[0] == "--bruteforce" {
+	if slices.Index(args, "--bruteforce") != -1 {
 		fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2023/05/input1.txt")) // 46294175
 	} else {
 		fmt.Println("\tPart Two: (skipped by default, run with a '--bruteforce' option and prepare to wait up to 20 min)")

@@ -55,4 +55,6 @@ for (let i=0; i<p.length; i++) {
 
 console.log("Day 15: Lens Library")
 console.log("\tPart One:",p1) // 513643
+assert(p1 == 513643)
 console.log("\tPart Two:",sum) // 265345
+assert(sum == 265345)

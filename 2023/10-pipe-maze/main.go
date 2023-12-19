@@ -117,7 +117,9 @@ func p2(f string) int {
 	_, loop := giantLoop(maze, start)
 
 	repairedQuadLoop := repair(quad(maze), quad(loop))
-	showLoop(repairedQuadLoop)
+	if slices.Index(os.Args[1:], "--visual") != -1 {
+		showLoop(repairedQuadLoop)
+	}
 
 	mx, my := maxPoint(repairedQuadLoop)
 	// fill from each corner, quick and dirty
@@ -128,7 +130,9 @@ func p2(f string) int {
 
 	loop = shrink(repairedQuadLoop)
 
-	showLoop(loop)
+	if slices.Index(os.Args[1:], "--visual") != -1 {
+		showLoop(loop)
+	}
 
 	return countZeroes(loop)
 }

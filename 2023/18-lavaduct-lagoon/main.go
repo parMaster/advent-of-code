@@ -6,6 +6,7 @@ import (
 	"log"
 	"math"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -93,7 +94,11 @@ func p1(file string) int {
 	in, _ := os.ReadFile(file)
 	f, w, h = read(string(in))
 	fill(&f, image.Point{0, 0})
-	show(f, w, h)
+
+	if slices.Index(os.Args[1:], "--visual") != -1 {
+		show(f, w, h)
+	}
+
 	lava := 0
 	for y := 0; y <= h; y++ {
 		for x := 0; x <= w; x++ {

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"os"
+	"slices"
 	"strings"
 
 	"golang.org/x/exp/maps"
@@ -95,7 +96,10 @@ func (g galaxies) show() {
 func solve(f string, expansion int) int {
 	in, _ := os.ReadFile(f)
 	g := readexpand(string(in), expansion)
-	g.show()
+
+	if slices.Index(os.Args[1:], "--visual") != -1 {
+		g.show()
+	}
 
 	points := maps.Keys(g)
 

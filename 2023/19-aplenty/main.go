@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"maps"
 	"os"
 	"regexp"
 	"slices"
@@ -117,7 +118,7 @@ type Option struct {
 
 type Nodes map[string][]Option
 
-var startInterval []Interval
+var startInterval map[rune]Interval = map[rune]Interval{'x': {1, 4000}, 'm': {1, 4000}, 'a': {1, 4000}, 's': {1, 4000}}
 
 func p2(file string) int {
 	in, _ := os.ReadFile(file)
@@ -131,16 +132,13 @@ func p2(file string) int {
 			// last one is default - inverted to every condition before it
 			// it also default for every condition because it got the inverted sum of the previous ones
 			opts := strings.Split(match[2], ",")
-			defaultOpt := Option{xmas: map[rune]Interval{'x': {1, 4000}, 'm': {1, 4000}, 'a': {1, 4000}, 's': {1, 4000}}}
+			defaultOpt := Option{xmas: maps.Clone(startInterval)}
 			defaultOpt.next = opts[len(opts)-1]
 
 			opts = opts[:len(opts)-1]
 			for _, opt := range opts {
 
-				newOpt := Option{xmas: map[rune]Interval{}}
-				for dk, dv := range defaultOpt.xmas {
-					newOpt.xmas[dk] = Interval{from: dv.from, to: dv.to}
-				}
+				newOpt := Option{xmas: maps.Clone(defaultOpt.xmas)}
 				newOpt.next = strings.Split(opt, ":")[1]
 
 				rule := strings.Split(opt, ":")[0]
@@ -173,11 +171,11 @@ func p2(file string) int {
 		}
 	}
 
-	startInterval := map[rune]Interval{'x': {1, 4000}, 'm': {1, 4000}, 'a': {1, 4000}, 's': {1, 4000}}
-
 	return walk(&nodes, startInterval, "in", "in")
 }
 
+// recursively walk through the nodes, with xmas starting intervals, starting from "node".
+// path is just nodes "call stack" for debug print
 func walk(nodes *Nodes, xmas map[rune]Interval, node string, path string) int {
 
 	if node == "A" {
@@ -212,7 +210,7 @@ func walk(nodes *Nodes, xmas map[rune]Interval, node string, path string) int {
 }
 
 func intersect(a, b map[rune]Interval) map[rune]Interval {
-	isec := map[rune]Interval{'x': {1, 4000}, 'm': {1, 4000}, 'a': {1, 4000}, 's': {1, 4000}}
+	isec := maps.Clone(startInterval)
 	for ak, av := range a {
 		bv := b[ak]
 		isec[ak] = Interval{max(av.from, bv.from), min(av.to, bv.to)}

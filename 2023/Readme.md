@@ -56,7 +56,7 @@ It's just a translation of the problem description into code. One run = one star
 Also available in [JS](https://github.com/parMaster/advent-of-code/tree/main/2023/15-lens-library/index.js). It's so unbelievably hard to write JS after Go - no types, always guessing what's the type of the variable. Still know very little even about the basics of (V8)JS, but it's fun to learn. Map() apparently is a linked hash map, so it's easy to iterate over it in the insertion order, which saved one for-loop compared to Go version.
 
 ## [Day 16 - The floor will be lava](https://github.com/parMaster/advent-of-code/tree/main/2023/16-the-floor-will-be-lava)
-Coordinates math, again. I'm glad I had a functions for that already. The rest is just a matter of reading the problem description and translating it into code.
+Coordinates math, again. I'm glad I had functions for that already. The rest is just a matter of reading the problem description and translating it into code.
 
 ## [Day 17 - Clumsy Crucible](https://github.com/parMaster/advent-of-code/tree/main/2023/17-clumsy-crucible)
 First part traditionally - naive method (flood-fill and count everything), to see the second part, which was insane. Implemented Dijkstra pretty fast, but stuck for hours, unable to imagine the 4-D solution space and even think of a composite key for priority queue, to avoid overwriting the same cell with different values. Finally, I gave up and looked at the subreddit, where I found a discussion of a composite array, which was a good hint. Couldn't stop before got the second star.
@@ -68,3 +68,5 @@ This is really not fair. I've spent my day inventing the rendering algorithm for
 First part is just a naive solution - put all the parts through the workflows and count the results. Second part is pretty mush the same problem as Day 5 which I solved with brute force but this one is N>10^14... so, I guess I can't get away from solving it a proper way.
 
 Thought of giving up part two after writing 95% working code, never understood my mistake, went to reddit, found [a comment](https://www.reddit.com/r/adventofcode/comments/18mau1e/comment/ke38kvc/?utm_source=reddit&utm_medium=web2x&context=3) - seems like I'm not the one with the same mistake. It only took 10 minutes to fix reading the input data correctly and get the second star. I'm glad I didn't give up.
+
+That's it for now. I'm really pissed after getting day 20 wrong TWICE only to realize that problem description didn't match the example in the description. I'm not sure if I'll continue, it's getting difficult to understand 4 pages of incorrect problem description just to implement a glorified counter with cycle detection.

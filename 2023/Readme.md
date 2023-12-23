@@ -69,4 +69,7 @@ First part is just a naive solution - put all the parts through the workflows an
 
 Thought of giving up part two after writing 95% working code, never understood my mistake, went to reddit, found [a comment](https://www.reddit.com/r/adventofcode/comments/18mau1e/comment/ke38kvc/?utm_source=reddit&utm_medium=web2x&context=3) - seems like I'm not the one with the same mistake. It only took 10 minutes to fix reading the input data correctly and get the second star. I'm glad I didn't give up.
 
-That's it for now. I'm really pissed after getting day 20 wrong TWICE only to realize that problem description didn't match the example in the description. I'm not sure if I'll continue, it's getting difficult to understand 4 pages of incorrect problem description just to implement a glorified counter with cycle detection.
+~~That's it for now. I'm really pissed after getting day 20 wrong TWICE only to realize that problem description didn't match the example in the description. I'm not sure if I'll continue, it's getting difficult to understand 4 pages of incorrect problem description just to implement a glorified counter with cycle detection.~~
+
+## [Day 20 - Pulse Propagation](https://github.com/parMaster/advent-of-code/tree/main/2023/20-pulse-propagation)
+First part would be straightforwart if I didn't get the problem description wrong. Second part is identifying modules that we need to detect cycles on, counting cycles and finding the LCM of all the cycles. That "otherwise" word in the problem description screwed me up for days, _otherwise_ I would've solved it in a couple of hours.

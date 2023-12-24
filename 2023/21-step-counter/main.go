@@ -100,7 +100,9 @@ func reach(f Field, sx, sy, steps int) []int {
 		q = slices.Clone(nq)
 		N++
 		res = append(res, len(nq))
-		// fmt.Println(N, res[len(res)-1])
+		if N%10 == 0 || N%65 == 0 || N%196 == 0 || N%327 == 0 && slices.Index(os.Args[1:], "--bruteforce") != -1 {
+			fmt.Println(N, res[len(res)-1])
+		}
 		if N == steps {
 			return res
 		}
@@ -135,10 +137,12 @@ func main() {
 	fmt.Println("\tPart One: ", res[64]) // 3646
 
 	if slices.Index(os.Args[1:], "--bruteforce") == -1 {
-		fmt.Println("\tPart Two: (skipped by default, run with a '--bruteforce' option and prepare to wait up to 30 min)")
+		fmt.Println("\tPart Two: (skipped by default, run with a '--bruteforce' option and prepare to wait up to 20 min)")
 		return
 	}
 
+	fmt.Println("Prepare to wait up to ~20 min")
+	fmt.Println("Reaching", 65+0*131, 65+1*131, "and", 65+2*131, "steps to build predictions for further steps:")
 	res = reach(lines, sx, sy, 65+2*131) // Takes a good 10 minutes to compute
 
 	a := []int{
@@ -150,19 +154,15 @@ func main() {
 	// i.e.: a[3*131+65] = predict[a]
 
 	// how many garden plots could the Elf reach in exactly 26501365 steps?
-	// 26501365 = 202300 * 131 + 65
+	// 26501365 = 202300 * 131 + 62
 
-	if slices.Index(os.Args[1:], "--visual") != -1 {
-		fmt.Println("Predicting steps till N == 202300")
-	}
+	fmt.Println("Predicting steps till N == 202300")
 
 	for N := 2; N < 202300; N++ {
 		a = append(a, predict(a))
 
-		if slices.Index(os.Args[1:], "--visual") != -1 {
-			if N%100 == 0 {
-				fmt.Println("N=", N, "/ 202300\tsteps=", a[len(a)-1])
-			}
+		if N%100 == 0 {
+			fmt.Println("N=", N, "/ 202300\tsteps=", a[len(a)-1])
 		}
 	}
 

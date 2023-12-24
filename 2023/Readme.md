@@ -77,3 +77,6 @@ First part would be straightforwart if I didn't get the problem description wron
 ## [Day 21 - Step Counter](https://github.com/parMaster/advent-of-code/tree/main/2023/21-step-counter)
 Only raw-dog bruteforce, no optimization whatsoever. Takes 30 minutes on 10 year old i5 3.5Ghz, 20 minutes on 10 year old 8-core Xeon. Hardware must work for its money.
 It was the plan from the very beginning to solve it with a brute force, then check for cycles. It just took very long to iron-out all the bugs, and it takes really long time to compute, but it's a correct solution.
+Also, did Part 2 with raw slices, no image.Point, no fancy stuff, just a primitive coordinates math.
+
+Again and again - it's a really messy code, because there were N hipothesis that I was testing for different parts of the strategy, and this one worked, so why bother refactoring it? The chances are - it won't run anymore, it did its thing, it's done. ~~I'd like to refactor it, because I know which hipothesis is correct, maybe I'll do it someday.~~ Got it down to 5 seconds with a couple of optimizations - maps instead of slices, prediction algorithm dramatically faster.

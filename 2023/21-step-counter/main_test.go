@@ -62,11 +62,11 @@ func TestPredict(t *testing.T) {
 	// how many garden plots could the Elf reach in exactly 26501365 steps?
 	// 26501365 = 202300 * 131 + 65
 
-	log.Println(predict(a))
+	// log.Println(predict(a))
 
-	for N := 2; N <= 202305; N++ {
-		a = append(a, predict(a))
-		if N%100 == 0 || N > 202290 {
+	for N := 2; N < 202300; N++ {
+		a = append(a, predict(a[max(0, len(a)-4):]))
+		if N%1000 == 0 || N > 202290 {
 			log.Println(N, a[len(a)-1])
 		}
 	}
@@ -74,6 +74,11 @@ func TestPredict(t *testing.T) {
 	log.Println(a[len(a)-1])
 }
 
-// 11963043657 low
-// 12008763796 low
-// 12008823157 low
+// 2023/12/25 00:39:32 2 181842
+// 2023/12/25 00:39:32 3 300451
+// 2023/12/25 00:39:32 4 448684
+// 2023/12/25 00:39:32 5 626541
+// 2023/12/25 00:39:32 6 834022
+// 2023/12/25 00:39:32 7 1071127
+// 2023/12/25 00:39:32 8 1337856
+// 2023/12/25 00:39:32 9 1634209

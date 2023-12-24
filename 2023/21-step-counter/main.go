@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"maps"
 	"os"
 	"slices"
 	"strings"
@@ -47,9 +48,6 @@ func readLines(in string, tile int) (Field, int, int) {
 }
 
 func showLines(f Field, sx, sy int) {
-	// if slices.Index(os.Args[1:], "--visual") == -1 {
-	// 	return
-	// }
 	asciiBlocks := []string{"░░", "██", "▒▒"}
 	for y := 0; y < len(f); y++ {
 		for x := 0; x < len(f[y]); x++ {
@@ -69,15 +67,15 @@ func showLines(f Field, sx, sy int) {
 }
 
 // Queue of coordinates to step next
-type Q [][2]int
+type Q map[[2]int]bool
 
 func reach(f Field, sx, sy, steps int) []int {
 	res := []int{0}
-	q := Q{{sx, sy}}
+	q := Q{{sx, sy}: true}
 	N := 0
 	for N < steps && len(q) > 0 {
 		nq := Q{}
-		for _, qi := range q {
+		for qi := range q {
 			x, y := qi[0], qi[1]
 			// check around qi:
 			for _, move := range [4][2]int{{0, -1}, {-1, 0}, {0, 1}, {1, 0}} {
@@ -91,13 +89,11 @@ func reach(f Field, sx, sy, steps int) []int {
 				}
 
 				// otherwise legal next step
-				if slices.Index(nq, [2]int{cx, cy}) == -1 {
-					nq = append(nq, [2]int{cx, cy})
-				}
+				nq[[2]int{cx, cy}] = true
 			}
 		}
 
-		q = slices.Clone(nq)
+		q = maps.Clone(nq)
 		N++
 		res = append(res, len(nq))
 		if N%10 == 0 || N%65 == 0 || N%196 == 0 || N%327 == 0 && slices.Index(os.Args[1:], "--bruteforce") != -1 {
@@ -110,9 +106,18 @@ func reach(f Field, sx, sy, steps int) []int {
 	return []int{}
 }
 
+func AllEqual(a []int, s int) bool {
+	for i := range a {
+		if a[i] != s {
+			return false
+		}
+	}
+	return true
+}
+
 // prediction func from Day 10 Part 1
 func predict(a []int) int {
-	if len(a) == 0 || slices.Max(a) == 0 && slices.Min(a) == 0 {
+	if len(a) == 0 || AllEqual(a, 0) {
 		return 0
 	}
 

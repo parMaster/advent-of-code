@@ -73,3 +73,6 @@ Thought of giving up part two after writing 95% working code, never understood m
 
 ## [Day 20 - Pulse Propagation](https://github.com/parMaster/advent-of-code/tree/main/2023/20-pulse-propagation)
 First part would be straightforwart if I didn't get the problem description wrong. Second part is identifying modules that we need to detect cycles on, counting cycles and finding the LCM of all the cycles. That "otherwise" word in the problem description screwed me up for days, _otherwise_ I would've solved it in a couple of hours.
+
+## [Day 21 - Step Counter](https://github.com/parMaster/advent-of-code/tree/main/2023/21-step-counter)
+It was the plan from the very beginning to solve it with a brute force, then check for cycles. It just took very long to iron-out all the bugs, and it takes really long time to compute, but it's a correct solution. 

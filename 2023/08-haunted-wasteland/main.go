@@ -65,9 +65,11 @@ func PartTwo(f string, lcm func([]int) int) int {
 
 func main() {
 	fmt.Println("Day 8: Haunted Wasteland")
-	fmt.Println("\tPart One:", PartOne("../aoc-inputs/2023/08/input1.txt"))                                  // 12737
-	fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2023/08/input1.txt", lcm))                             // 9064949303801
-	fmt.Println("\tPart Two (brute forcing LCM):", PartTwo("../aoc-inputs/2023/08/input1.txt", lcm_smartbf)) // 9064949303801
+	fmt.Println("\tPart One:", PartOne("../aoc-inputs/2023/08/input1.txt"))      // 12737
+	fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2023/08/input1.txt", lcm)) // 9064949303801
+	if slices.Index(os.Args[1:], "--bruteforce") != -1 {
+		fmt.Println("\tPart Two (brute forcing LCM):", PartTwo("../aoc-inputs/2023/08/input1.txt", lcm_smartbf)) // 9064949303801
+	}
 }
 
 // Sieve of Eratosthenes

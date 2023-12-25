@@ -112,7 +112,7 @@ func AllEqual(a []int, s int) bool {
 	return true
 }
 
-// prediction func from Day 10 Part 1
+// prediction func from Day 9 Part 1
 func predict(a []int) int {
 	if len(a) == 0 || AllEqual(a, 0) {
 		return 0
@@ -133,7 +133,7 @@ func main() {
 	lines, sx, sy := readLines(string(in), 5) // 5x5 tiles
 
 	if slices.Index(os.Args[1:], "--visual") != -1 {
-		showLines(lines, sx, sy)
+		showLines(readLines(string(in), 3))
 	}
 	res := reach(lines, sx, sy, 64)
 	fmt.Println("\tPart One:", res[64]) // 3646

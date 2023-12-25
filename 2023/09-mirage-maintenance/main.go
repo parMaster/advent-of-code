@@ -9,7 +9,7 @@ import (
 )
 
 func predict(a []int) int {
-	if slices.Max(a) == 0 && slices.Min(a) == 0 {
+	if len(a) == 0 || AllEqual(a, 0) {
 		return 0
 	}
 
@@ -39,4 +39,13 @@ func main() {
 	fmt.Println("Day 9: Mirage Maintenance")
 	fmt.Println("\tPart One:", solve("../aoc-inputs/2023/09/input.txt", false)) // 1921197370
 	fmt.Println("\tPart Two:", solve("../aoc-inputs/2023/09/input.txt", true))  // 1124
+}
+
+func AllEqual(a []int, s int) bool {
+	for i := range a {
+		if a[i] != s {
+			return false
+		}
+	}
+	return true
 }

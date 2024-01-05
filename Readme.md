@@ -2,8 +2,7 @@
 2023 puzzles to solve:
 
 - 12 p2
-- 23 p2
-- 24
+- 24 p2
 - 25
 
 # [Advent of Code 2022](https://github.com/parMaster/advent-of-code/tree/main/2022)

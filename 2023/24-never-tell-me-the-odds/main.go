@@ -1,19 +1,11 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"math"
 	"os"
 	"strings"
 )
-
-// 19, 13, 30 @ -2,  1, -2
-// x1, y1, z1 @ dx1,dy1,dz1
-//
-// 18, 19, 22 @ -1, -1, -2
-// x2, y2, z2 @ dx2,dy2,dz2
-//
 
 type Vector struct {
 	x, y, z, dx, dy, dz float64
@@ -24,12 +16,9 @@ func read(file string) []Vector {
 
 	v := []Vector{}
 	for _, l := range strings.Split(strings.TrimSpace(string(in)), "\n") {
-		vals := []float64{}
-		l = strings.Replace(strings.TrimSpace(l), " @", ",", -1)
-		json.Unmarshal([]byte("["+l+"]"), &vals)
-		// fmt.Println(l)
-		// fmt.Println(vals)
-		v = append(v, Vector{vals[0], vals[1], vals[2], vals[3], vals[4], vals[5]})
+		vc := Vector{}
+		fmt.Sscanf(strings.TrimSpace(l), "%f, %f, %f @ %f, %f, %f", &vc.x, &vc.y, &vc.z, &vc.dx, &vc.dy, &vc.dz)
+		v = append(v, vc)
 	}
 
 	return v
@@ -105,7 +94,6 @@ func PartOne(file string, areaFrom, areaTo float64) int {
 		}
 	}
 
-	// fmt.Println(crossings)
 	return crossings
 }
 

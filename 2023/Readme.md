@@ -84,3 +84,11 @@ Again and again - it's a really messy code, because there were N hipothesis that
 ## [Day 22 - Sand Slabs](https://github.com/parMaster/advent-of-code/tree/main/2023/22-sand-slabs)
 Bruteforced the first part, 5 minutes later bruteforced the second part. Took a real TDD approach with this one - failing tests first, then code. First test was to check coordinate math for intersecting rectangles, then reading input data into a stack, then dropping stack. 
 
+## [Day 23 - A Long Walk](https://github.com/parMaster/advent-of-code/tree/main/2023/23-a-long-walk)
+A long walk indeed... First part, as usual - no surprises: a stack, a loop and a bunch of conditions. Second part was obviously NP-hard and general solution requires to check every path to find a longest one. Even after reading reddit, seeing the graph and many solutions, all of which were just adapting to the shape of this specific graph, the general solution **still** requires to check every path. Then I checked [mnml aoc repo](https://github.com/mnml/aoc/tree/main/2023/23) for his implementation, which was also bruteforce. So, next logical step was to slap a blob of fresh thermal compound on a CPU and let it run. In 4 hours max value improved 14 times, from 5458 to 6246, next 7 hours no new max value was found, so I tried the last one, and it worked - 6246 was the solution for my data and a second star. Still didn't stop the program, just wondering how long till it's done.
+
+## [Day 24 - Never Tell Me The Odds](https://github.com/parMaster/advent-of-code/tree/main/2023/24-never-tell-me-the-odds)
+Checked a couple of hipothesis for the first part with tests, learned how to check every condition - that vectors are intersecting, the point of intersection in bounds and in the future, then combined together to check every pair of vectors. 
+
+Second part is still in progress, obviously a pure math problem, has almost nothing to do with programming.
+

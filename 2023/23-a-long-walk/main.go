@@ -43,6 +43,7 @@ func showMaze(f Maze, slopes bool) {
 }
 
 func walkSlopes(maze Maze, start [2]int) int {
+	maze[0][1] = '#'
 	moves := map[rune][2]int{'^': {0, -1}, '<': {-1, 0}, 'v': {0, 1}, '>': {1, 0}}
 
 	sx, sy := start[0], start[1]
@@ -116,8 +117,7 @@ type Q struct {
 	steps int
 }
 
-func p2() {
-	maze := readLines("../aoc-inputs/2023/23/input.txt")
+func MaxPath(maze Maze) {
 	maze[0][1] = '#'
 
 	forkedBefore := map[Q]int{}
@@ -135,7 +135,6 @@ func p2() {
 	for !q.IsEmpty() {
 
 		curr := q.Pop()
-		// log.Println(curr)
 		sx, sy = curr.pos[0], curr.pos[1]
 		steps = curr.steps
 		direction = curr.dir
@@ -150,8 +149,8 @@ func p2() {
 			continue
 		}
 
-		visited = visited[:steps]                 //??? +1 ??
-		visited = append(visited, [2]int{sx, sy}) // ???
+		visited = visited[:steps]
+		visited = append(visited, [2]int{sx, sy})
 
 		legal := [][2]int{}
 		for move := range moves {
@@ -188,20 +187,24 @@ func p2() {
 				// 	forkedBefore[Q{pos: legal[i], dir: direction, steps: steps + 1}] = steps + 1
 				// }
 				q.Push(newQ)
-				// log.Println("New branch: from ", legal[i], "dir:", direction, "with ", steps+1, "steps")
 			}
 		}
 	}
-	log.Println(results)             //
-	log.Println(slices.Max(results)) //
+	log.Println("Max path: ", slices.Max(results))
 }
 
-// 6190
-// 6218
-// 6219
-
 func main() {
+	maze := readLines("../aoc-inputs/2023/23/input.txt")
+	fmt.Println("Day 23: A Long Walk")
+	if slices.Contains(os.Args[1:], "--visual") {
+		showMaze(maze, true)
+	}
+	fmt.Println("\tPart One:", walkSlopes(maze, [2]int{1, 1})) // 2386
 
-	p2()
-
+	if slices.Contains(os.Args[1:], "--bruteforce") {
+		fmt.Println("\tPart Two: will print preliminary results every time new max path is found. It's a really long walk...")
+		MaxPath(maze) // 6246
+	} else {
+		fmt.Println("\tPart Two: (skipped by default, run with a '--bruteforce' option and prepare to wait up to forever)")
+	}
 }

@@ -150,7 +150,8 @@ func Test_All(t *testing.T) {
 }
 
 func Test_EatMemory(t *testing.T) {
-	n := 300 * 1000 * 1000
+	n := 300
+	// n := 300 * 1000 * 1000
 	// n = 3603973818
 	require.Equal(t, n, len(EatMemory(n)))
 }

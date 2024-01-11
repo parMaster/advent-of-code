@@ -118,21 +118,21 @@ type TreeNode struct {
 }
 
 func leafSimilar(root1 *TreeNode, root2 *TreeNode) bool {
-	return slices.Equal(lvs(root1), lvs(root2))
+	return slices.Equal(root1.lvs(), root2.lvs())
 }
 
-// leaf value sequence
-func lvs(node *TreeNode) []int {
+// leaf value sequence returns array of leaf values (nodes with no descendants) from left to right
+func (node *TreeNode) lvs() []int {
 
 	res := []int{}
 	if node.Left == nil && node.Right == nil {
 		return []int{node.Val}
 	}
 	if node.Left != nil {
-		res = append(res, lvs(node.Left)...)
+		res = append(res, node.Left.lvs()...)
 	}
 	if node.Right != nil {
-		res = append(res, lvs(node.Right)...)
+		res = append(res, node.Right.lvs()...)
 	}
 
 	return res
@@ -147,10 +147,10 @@ func Test_LVS(t *testing.T) {
 		3, &TreeNode{5, &TreeNode{6, nil, nil}, &TreeNode{7, nil, nil}}, &TreeNode{1, &TreeNode{4, nil, nil}, &TreeNode{2, &TreeNode{9, nil, nil}, &TreeNode{8, nil, nil}}},
 	}
 
-	require.Equal(t, []int{6, 7, 4, 9, 8}, lvs(root1))
-	require.Equal(t, []int{6, 7, 4, 9, 8}, lvs(root2))
+	require.Equal(t, []int{6, 7, 4, 9, 8}, root1.lvs())
+	require.Equal(t, []int{6, 7, 4, 9, 8}, root2.lvs())
 
-	require.Equal(t, lvs(root1), lvs(root2))
+	require.True(t, leafSimilar(root1, root2))
 }
 
 // returns binary tree constructed from string like "3,5,1,6,7,4,2,null,null,null,null,null,null,9,8"
@@ -204,7 +204,7 @@ func Test_ReadBST(t *testing.T) {
 // The left subtree of a node contains only nodes with keys less than the node's key.
 // The right subtree of a node contains only nodes with keys greater than the node's key.
 // Both the left and right subtrees must also be binary search trees.
-func isValidBST(root *TreeNode) bool {
+func (root *TreeNode) isValidBST() bool {
 	var validSubtree func(root *TreeNode, minVal, maxVal int) bool
 	validSubtree = func(root *TreeNode, minVal, maxVal int) bool {
 
@@ -234,14 +234,14 @@ func isValidBST(root *TreeNode) bool {
 }
 
 func Test_validBST(t *testing.T) {
-	require.True(t, isValidBST(ReadBST("2,1,3")))
-	require.False(t, isValidBST(ReadBST("2,2,2")))
-	require.False(t, isValidBST(ReadBST("5,1,4,null,null,3,6")))
-	require.False(t, isValidBST(ReadBST("5,4,6,null,null,3,7")))
+	require.True(t, ReadBST("2,1,3").isValidBST())
+	require.False(t, ReadBST("2,2,2").isValidBST())
+	require.False(t, ReadBST("5,1,4,null,null,3,6").isValidBST())
+	require.False(t, ReadBST("5,4,6,null,null,3,7").isValidBST())
 }
 
 // 501. Find Mode in Binary Search Tree
-func findMode(root *TreeNode) []int {
+func (root *TreeNode) findMode() []int {
 
 	memo := map[int]int{}
 
@@ -278,13 +278,13 @@ func findMode(root *TreeNode) []int {
 }
 
 func Test_findMode(t *testing.T) {
-	require.Equal(t, []int{2}, findMode(&TreeNode{1, nil, &TreeNode{2, &TreeNode{2, nil, nil}, nil}}))
-	require.Equal(t, []int{3}, findMode(ReadBST("1,null,2,2,3,3,3")))
+	require.Equal(t, []int{2}, ReadBST("1,0,2,2,null").findMode())
+	require.Equal(t, []int{3}, ReadBST("1,null,2,2,3,3,3").findMode())
 }
 
 // 1026. Maximum Difference Between Node and Ancestor
 // https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/
-func maxAncestorDiff(root *TreeNode) int {
+func (root *TreeNode) maxAncestorDiff() int {
 	var minmax func(root *TreeNode, minVal, maxVal int) int
 	minmax = func(root *TreeNode, minVal, maxVal int) int {
 		minVal = min(minVal, root.Val)
@@ -305,6 +305,90 @@ func maxAncestorDiff(root *TreeNode) int {
 }
 
 func Test_maxAncestorDiff(t *testing.T) {
-	require.Equal(t, 7, maxAncestorDiff(ReadBST("8,3,10,1,6,null,14,null,null,4,7,13")))
-	require.Equal(t, 3, maxAncestorDiff(&TreeNode{1, nil, &TreeNode{2, nil, &TreeNode{0, &TreeNode{3, nil, nil}, nil}}}))
+	require.Equal(t, 7, ReadBST("8,3,10,1,6,null,14,null,null,4,7,13").maxAncestorDiff())
+	require.Equal(t, 3, ReadBST("1,0,2,null,null,null,0,null,null,null,null,null,null,3,null").maxAncestorDiff())
+}
+
+func (root *TreeNode) Traverse(f func(root *TreeNode)) {
+
+	f(root)
+
+	if root.Left != nil {
+		root.Left.Traverse(f)
+	}
+
+	if root.Right != nil {
+		root.Right.Traverse(f)
+	}
+}
+
+// findMode with Traverse
+func (root *TreeNode) findMode2() []int {
+	memo := map[int]int{}
+
+	root.Traverse(func(root *TreeNode) {
+		if _, ok := memo[root.Val]; ok {
+			memo[root.Val]++
+		} else {
+			memo[root.Val] = 1
+		}
+	})
+
+	maxFreq := 0
+	for _, freq := range memo {
+		maxFreq = max(maxFreq, freq)
+	}
+	res := []int{}
+	for key, freq := range memo {
+		if freq == maxFreq {
+			res = append(res, key)
+		}
+	}
+
+	return res
+}
+
+func Test_findMode2(t *testing.T) {
+	require.Equal(t, []int{2}, ReadBST("1,0,2,2,null").findMode2())
+	require.Equal(t, []int{3}, ReadBST("1,null,2,2,3,3,3").findMode2())
+}
+
+func Traverse(root *TreeNode, f func(root *TreeNode)) {
+	if root == nil {
+		return
+	}
+
+	f(root)
+
+	Traverse(root.Left, f)
+	Traverse(root.Right, f)
+}
+
+// 1038. Binary Search Tree to Greater Sum Tree
+// https://leetcode.com/problems/binary-search-tree-to-greater-sum-tree/
+func bstToGst(root *TreeNode) *TreeNode {
+	memo := map[int]int{}
+
+	Traverse(root, func(root *TreeNode) {
+		if _, ok := memo[root.Val]; ok {
+			memo[root.Val]++
+		} else {
+			memo[root.Val] = 1
+		}
+	})
+
+	Traverse(root, func(root *TreeNode) {
+		rootVal := root.Val
+		for key := range memo {
+			if key > rootVal {
+				root.Val += key * memo[key]
+			}
+		}
+	})
+
+	return root
+}
+
+func Test_bstToGst(t *testing.T) {
+	require.Equal(t, ReadBST("30,36,21,36,35,26,15,null,null,null,33,null,null,null,8"), bstToGst(ReadBST("4,1,6,0,2,5,7,null,null,null,3,null,null,null,8")))
 }

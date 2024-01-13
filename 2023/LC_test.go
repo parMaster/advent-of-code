@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math"
 	"slices"
 	"strconv"
@@ -391,4 +392,171 @@ func bstToGst(root *TreeNode) *TreeNode {
 
 func Test_bstToGst(t *testing.T) {
 	require.Equal(t, ReadBST("30,36,21,36,35,26,15,null,null,null,33,null,null,null,8"), bstToGst(ReadBST("4,1,6,0,2,5,7,null,null,null,3,null,null,null,8")))
+}
+
+// 670. Maximum Swap
+func maximumSwap(num int) int {
+	s := strconv.Itoa(num)
+	maxed := []int{}
+	for _, v := range s {
+		maxed = append(maxed, int(v)-0x30)
+	}
+	in := slices.Clone(maxed)
+	slices.SortFunc(maxed, func(i, j int) int {
+		if i > j {
+			return -1
+		}
+		return 1
+	})
+
+	fmt.Println("in:", in, "maxed:", maxed)
+
+	start := 0 // start of the suboptimal part if array
+	for i := 0; i < len(in); i++ {
+		if in[i] != maxed[i] {
+			start = i
+			break
+		}
+	}
+
+	// find max digit in 'in' from right to left
+	maxDigit := 0
+	maxDigitIdx := -1
+	for j := len(in) - 1; j > start; j-- {
+		if in[j] > maxDigit {
+			maxDigit = in[j]
+			maxDigitIdx = j
+		}
+	}
+	fmt.Println("maxDigit:", maxDigit, "maxDigitIdx:", maxDigitIdx)
+
+	for i := start; i < maxDigitIdx; i++ {
+		if in[i] < maxDigit {
+			in[i], in[maxDigitIdx] = maxDigit, in[i]
+			break
+		}
+	}
+
+	// output
+	res := 0
+	for _, v := range in {
+		res = res*10 + v
+	}
+
+	return res
+}
+
+func Test_maximumSwap(t *testing.T) {
+	require.Equal(t, 999, maximumSwap(999))
+	require.Equal(t, 7236, maximumSwap(2736))
+	require.Equal(t, 9913, maximumSwap(1993))
+	require.Equal(t, 9973, maximumSwap(9973))
+	require.Equal(t, 98863, maximumSwap(98368))
+	require.Equal(t, 210, maximumSwap(120))
+	require.Equal(t, 52341342, maximumSwap(22341345))
+	require.Equal(t, 99910, maximumSwap(99901))
+}
+
+// 1704. Determine if String Halves Are Alike
+func halvesAreAlike(s string) bool {
+	vowels := []rune{'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'}
+
+	cnt := 0
+	for i, v := range s {
+		if slices.Contains(vowels, v) {
+			if i < len(s)/2 {
+				cnt++
+			} else {
+				cnt--
+			}
+		}
+	}
+
+	return cnt == 0
+}
+
+func Test_halvesAreAlike(t *testing.T) {
+	require.True(t, halvesAreAlike("book"))
+	require.False(t, halvesAreAlike("textbook"))
+	require.False(t, halvesAreAlike("MerryChristmas"))
+	require.True(t, halvesAreAlike("AbCdEfGh"))
+}
+
+// 2115. Find All the possible recipes for the given supplies
+func findAllRecipes(recipes []string, ingredients [][]string, supplies []string) []string {
+
+	memo := map[int]bool{}
+
+	var cook func(recipe int, cooking []int) bool
+	cook = func(recipe int, cooking []int) bool {
+
+		if res, ok := memo[recipe]; ok {
+			return res
+		}
+
+		if slices.Contains(cooking, recipe) {
+			// already cooking, cycle detected
+			memo[recipe] = false
+			return false
+		}
+
+		cookable := true
+		for _, product := range ingredients[recipe] {
+			if slices.Contains(supplies, product) {
+				// basic supply
+				continue
+			}
+			// check if we have recipe for this product
+			if r := slices.Index(recipes, product); r != -1 {
+				cookable = cookable && cook(r, append(cooking, recipe))
+			} else {
+				// no recipe for this product
+				cookable = false
+				break
+			}
+		}
+
+		memo[recipe] = cookable
+		return cookable
+	}
+
+	res := []string{}
+	for ir, recipe := range recipes {
+		if cook(ir, []int{}) {
+			res = append(res, recipe)
+		}
+	}
+
+	return res
+}
+
+func TestFindRecipes(t *testing.T) {
+	// Example 1:
+	// Input: recipes = ["bread"], ingredients = [["yeast","flour"]], supplies = ["yeast","flour","corn"]
+	// Output: ["bread"]
+	// Explanation:
+	// We can create "bread" since we have the ingredients "yeast" and "flour".
+	require.Equal(t, []string{"bread"}, findAllRecipes([]string{"bread"}, [][]string{{"yeast", "flour"}}, []string{"yeast", "flour", "corn"}))
+
+	// 	Example 2:
+	// Input: recipes = ["bread","sandwich"], ingredients = [["yeast","flour"],["bread","meat"]], supplies = ["yeast","flour","meat"]
+	// Output: ["bread","sandwich"]
+	// Explanation:
+	// We can create "bread" since we have the ingredients "yeast" and "flour".
+	// We can create "sandwich" since we have the ingredient "meat" and can create the ingredient "bread".
+	require.Equal(t, []string{"bread", "sandwich"}, findAllRecipes([]string{"bread", "sandwich"}, [][]string{{"yeast", "flour"}, {"bread", "meat"}}, []string{"yeast", "flour", "meat"}))
+	require.Equal(t, []string{"bread"}, findAllRecipes([]string{"bread", "sandwich"}, [][]string{{"yeast", "flour"}, {"bread", "meat", "marzipan"}}, []string{"yeast", "flour", "meat"}))
+
+	// 	Example 3:
+	// Input: recipes = ["bread","sandwich","burger"], ingredients = [["yeast","flour"],["bread","meat"],["sandwich","meat","bread"]], supplies = ["yeast","flour","meat"]
+	// Output: ["bread","sandwich","burger"]
+	// Explanation:
+	// We can create "bread" since we have the ingredients "yeast" and "flour".
+	// We can create "sandwich" since we have the ingredient "meat" and can create the ingredient "bread".
+	// We can create "burger" since we have the ingredient "meat" and can create the ingredients "bread" and "sandwich".
+	require.Equal(t, []string{"bread", "sandwich", "burger"}, findAllRecipes([]string{"bread", "sandwich", "burger"}, [][]string{{"yeast", "flour"}, {"bread", "meat"}, {"sandwich", "meat", "bread"}}, []string{"yeast", "flour", "meat"}))
+
+	// Example 4:
+	require.Equal(t, []string{"ju", "fzjnm", "q"}, findAllRecipes([]string{"ju", "fzjnm", "x", "e", "zpmcz", "h", "q"}, [][]string{{"d"}, {"hveml", "f", "cpivl"}, {"cpivl", "zpmcz", "h", "e", "fzjnm", "ju"}, {"cpivl", "hveml", "zpmcz", "ju", "h"}, {"h", "fzjnm", "e", "q", "x"}, {"d", "hveml", "cpivl", "q", "zpmcz", "ju", "e", "x"}, {"f", "hveml", "cpivl"}}, []string{"f", "hveml", "cpivl", "d"}))
+
 }

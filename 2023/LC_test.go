@@ -560,3 +560,40 @@ func TestFindRecipes(t *testing.T) {
 	require.Equal(t, []string{"ju", "fzjnm", "q"}, findAllRecipes([]string{"ju", "fzjnm", "x", "e", "zpmcz", "h", "q"}, [][]string{{"d"}, {"hveml", "f", "cpivl"}, {"cpivl", "zpmcz", "h", "e", "fzjnm", "ju"}, {"cpivl", "hveml", "zpmcz", "ju", "h"}, {"h", "fzjnm", "e", "q", "x"}, {"d", "hveml", "cpivl", "q", "zpmcz", "ju", "e", "x"}, {"f", "hveml", "cpivl"}}, []string{"f", "hveml", "cpivl", "d"}))
 
 }
+
+// 1657. Determine if Two Strings Are Close
+// https://leetcode.com/problems/determine-if-two-strings-are-close/
+func closeStrings(word1 string, word2 string) bool {
+
+	wc := func(word string) ([]int, []int) {
+		wc := map[rune]int{}
+		for _, v := range word {
+			if _, ok := wc[v]; ok {
+				wc[v]++
+			} else {
+				wc[v] = 1
+			}
+		}
+
+		letters, freqs := []int{}, []int{}
+		for l, f := range wc {
+			letters = append(letters, int(l))
+			freqs = append(freqs, f)
+		}
+		slices.Sort(letters)
+		slices.Sort(freqs)
+		return letters, freqs
+	}
+
+	l1, f1 := wc(word1)
+	l2, f2 := wc(word2)
+
+	return slices.Equal(l1, l2) && slices.Equal(f1, f2)
+
+}
+
+func Test_CloseString(t *testing.T) {
+	require.True(t, closeStrings("abc", "bca"))
+	require.False(t, closeStrings("abbzzca", "babzzcz"))
+	require.False(t, closeStrings("uau", "ssx"))
+}

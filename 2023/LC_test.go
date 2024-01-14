@@ -597,3 +597,61 @@ func Test_CloseString(t *testing.T) {
 	require.False(t, closeStrings("abbzzca", "babzzcz"))
 	require.False(t, closeStrings("uau", "ssx"))
 }
+
+// 209. Minimum Size Subarray Sum
+// https://leetcode.com/problems/minimum-size-subarray-sum/
+//
+// binary search of correct length subarray
+// from 1 to target, checking every lenght with sliding window
+// what can I say, I love brute force, but binary search is faster
+func minSubArrayLen(target int, nums []int) int {
+	// fmt.Println("minSubArrayLen", target)
+
+	maxSum := func(nums []int, window int) int {
+		sum := 0
+		for i := 0; i < window; i++ {
+			sum += nums[i]
+		}
+		if sum >= target {
+			return sum
+		}
+		for i := window; i < len(nums); i++ {
+			sum += nums[i] - nums[i-window]
+			if sum >= target {
+				return sum
+			}
+		}
+
+		return 0
+	}
+
+	sum := 0
+	for i := range nums {
+		sum += nums[i]
+	}
+	if sum < target {
+		return 0
+	}
+
+	fuse := 0
+	minLen, maxLen := 1, min(len(nums), target)
+	for minLen != maxLen && fuse < 40000 {
+		midLen := (maxLen-minLen)/2 + minLen
+		sum := maxSum(nums, midLen)
+		// fmt.Println("minLen:", minLen, "maxLen:", maxLen, "midLen:", midLen, "sum:", sum)
+		if sum >= target {
+			maxLen = midLen
+		} else {
+			minLen = midLen + 1
+		}
+	}
+
+	return maxLen
+}
+
+func TestMinSubArrayLen(t *testing.T) {
+	require.Equal(t, 2, minSubArrayLen(7, []int{2, 3, 1, 2, 4, 3}))
+	require.Equal(t, 1, minSubArrayLen(4, []int{1, 4, 4}))
+	require.Equal(t, 0, minSubArrayLen(11, []int{1, 1, 1, 1, 1, 1, 1, 1}))
+	require.Equal(t, 3, minSubArrayLen(11, []int{1, 2, 3, 4, 5}))
+}

@@ -655,3 +655,42 @@ func TestMinSubArrayLen(t *testing.T) {
 	require.Equal(t, 0, minSubArrayLen(11, []int{1, 1, 1, 1, 1, 1, 1, 1}))
 	require.Equal(t, 3, minSubArrayLen(11, []int{1, 2, 3, 4, 5}))
 }
+
+// 2225. Find Players with zero or one losses
+// bad, memory hungry, slow solution
+func findWinners(matches [][]int) [][]int {
+	losers, players := map[int]int{}, map[int]int{}
+
+	for _, m := range matches {
+		if _, ok := losers[m[1]]; ok {
+			losers[m[1]]++
+		} else {
+			losers[m[1]] = 1
+		}
+		players[m[0]], players[m[1]] = 1, 1
+	}
+
+	winners, onceLosers := []int{}, []int{}
+	for _, m := range matches {
+		if _, ok := losers[m[0]]; !ok {
+			winners = append(winners, m[0])
+		}
+	}
+	for p := range players {
+		if losers[p] == 1 {
+			onceLosers = append(onceLosers, p)
+		}
+	}
+	slices.Sort(winners)
+	winners = slices.Compact(winners)
+	slices.Sort(onceLosers)
+	onceLosers = slices.Compact(onceLosers)
+
+	return [][]int{winners, onceLosers}
+}
+
+func Test_FindWinners(t *testing.T) {
+	// Input: matches = [[1,3],[2,3],[3,6],[5,6],[5,7],[4,5],[4,8],[4,9],[10,4],[10,9]]
+	// Output: [[1,2,10],[4,5,7,8]]
+	require.Equal(t, [][]int{{1, 2, 10}, {4, 5, 7, 8}}, findWinners([][]int{{1, 3}, {2, 3}, {3, 6}, {5, 6}, {5, 7}, {4, 5}, {4, 8}, {4, 9}, {10, 4}, {10, 9}}))
+}

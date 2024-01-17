@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"maps"
 	"math"
+	"math/rand"
 	"slices"
 	"strconv"
 	"strings"
@@ -693,4 +695,66 @@ func Test_FindWinners(t *testing.T) {
 	// Input: matches = [[1,3],[2,3],[3,6],[5,6],[5,7],[4,5],[4,8],[4,9],[10,4],[10,9]]
 	// Output: [[1,2,10],[4,5,7,8]]
 	require.Equal(t, [][]int{{1, 2, 10}, {4, 5, 7, 8}}, findWinners([][]int{{1, 3}, {2, 3}, {3, 6}, {5, 6}, {5, 7}, {4, 5}, {4, 8}, {4, 9}, {10, 4}, {10, 9}}))
+}
+
+// 380. Insert Delete GetRandom O(1)
+type RandomizedSet struct {
+	s map[int]bool
+}
+
+func Constructor() RandomizedSet {
+	s := map[int]bool{}
+	return RandomizedSet{s: s}
+}
+
+func (this *RandomizedSet) Insert(val int) bool {
+	if _, ok := this.s[val]; !ok {
+		this.s[val] = true
+		return true
+	}
+	return false
+}
+
+func (this *RandomizedSet) Remove(val int) bool {
+	res := false
+	if _, ok := this.s[val]; ok {
+		res = true
+	}
+	maps.DeleteFunc(this.s, func(k int, v bool) bool {
+		if k == val {
+			return true
+		}
+		return false
+	})
+	return res
+}
+
+func (this *RandomizedSet) GetRandom() int {
+	n := rand.Intn(len(this.s))
+	i := 0
+	for k := range this.s {
+		if i == n {
+			return k
+		}
+		i++
+	}
+	return 0
+}
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * obj := Constructor();
+ * param_1 := obj.Insert(val);
+ * param_2 := obj.Remove(val);
+ * param_3 := obj.GetRandom();
+ */
+
+func TestRandSet(t *testing.T) {
+	obj := Constructor()
+	require.True(t, obj.Insert(1))
+	require.False(t, obj.Remove(2))
+	require.True(t, obj.Insert(2))
+	require.True(t, obj.Remove(1))
+	require.Equal(t, 2, obj.GetRandom())
+
 }

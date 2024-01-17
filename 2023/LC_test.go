@@ -758,3 +758,25 @@ func TestRandSet(t *testing.T) {
 	require.Equal(t, 2, obj.GetRandom())
 
 }
+
+// 1207. Unique Number of Occurrences
+func uniqueOccurrences(arr []int) bool {
+	h := map[int]int{}
+
+	for _, v := range arr {
+		if _, ok := h[v]; ok {
+			h[v]++
+		} else {
+			h[v] = 1
+		}
+	}
+
+	freqs := []int{}
+	for _, v := range h {
+		freqs = append(freqs, v)
+	}
+	slices.Sort(freqs)
+	cfreq := slices.Compact(freqs)
+
+	return len(freqs) == len(cfreq)
+}

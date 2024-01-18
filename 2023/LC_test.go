@@ -1,5 +1,7 @@
 package main
 
+// https://leetcode.com/parMaster/
+
 import (
 	"fmt"
 	"maps"
@@ -776,7 +778,90 @@ func uniqueOccurrences(arr []int) bool {
 		freqs = append(freqs, v)
 	}
 	slices.Sort(freqs)
-	cfreq := slices.Compact(freqs)
 
-	return len(freqs) == len(cfreq)
+	return len(freqs) == len(slices.Compact(freqs))
+}
+
+// 27. Remove Element
+func removeElement(nums []int, val int) int {
+	nums = slices.DeleteFunc(nums, func(i int) bool {
+		if i == val {
+			return true
+		}
+		return false
+	})
+	return len(nums)
+}
+
+func Test_removeElement(t *testing.T) {
+	require.Equal(t, 2, removeElement([]int{3, 2, 2, 3}, 3))
+	require.Equal(t, 5, removeElement([]int{0, 1, 2, 2, 3, 0, 4, 2}, 2))
+}
+
+// 70. Climbing Stairs
+func climbStairs(n int) int {
+
+	var m Memo
+
+	m.memo = map[int]int{}
+
+	res := 0
+
+	for i := 0; i < n; i++ {
+		res += m.FibM(i)
+	}
+	return res
+}
+
+type Memo struct {
+	memo map[int]int
+}
+
+func (m *Memo) FibM(n int) int {
+	elem, ok := m.memo[n]
+	if ok {
+		return elem
+	}
+	if n <= 2 {
+		return 1
+	}
+	m.memo[n] = m.FibM(n-1) + m.FibM(n-2)
+	return m.memo[n]
+}
+
+func TestClimb(t *testing.T) {
+	require.Equal(t, 2, climbStairs(2))
+	require.Equal(t, 3, climbStairs(3))
+	require.Equal(t, 5, climbStairs(4))
+	require.Equal(t, 8, climbStairs(5))
+	require.Equal(t, 1134903170, climbStairs(44))
+}
+
+/// UNFINISHED PROBLEMS BELOW
+
+// 76. Minimum Window Substring
+// https://leetcode.com/problems/minimum-window-substring/
+// build a map of frequencies of t, then slide a window (with minimum len of len(t)) over s
+// extend right pointer until all frequencies are <=0 (means we have all letters from t in the window)
+// move the left pointer until we have all letters from t in the window, but no more, then check if this window is shorter than the previous one, then move right pointer again and so on, until right pointer is on the last char of s
+func minWindow(s string, t string) string {
+
+	ft := map[rune]int{}
+	for _, v := range t {
+		if _, ok := ft[v]; ok {
+			ft[v]++
+		} else {
+			ft[v] = 1
+		}
+	}
+	fmt.Println("ft:", ft)
+
+	left, right := 0, 0
+	fmt.Println("left:", left, "right:", right, s[left:right+1])
+
+	return ""
+}
+
+func Test_MinWindow(t *testing.T) {
+	require.Equal(t, "BANC", minWindow("ADOBECODEBANC", "ABC"))
 }

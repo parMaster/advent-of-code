@@ -12,6 +12,9 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/gammazero/workerpool"
 )
 
 type Map struct {
@@ -96,7 +99,9 @@ func solve(start int64, length int64, maps Maps, results chan<- int64) {
 	var loc int64
 	var minlocation int64 = math.MaxInt64
 
-	fmt.Println("Planting ", length, " \tseeds from ", start)
+	startTime := time.Now()
+	fmt.Println("Planting", length, " \tseeds from", start)
+	// for s := start; s < start+3000000; s++ {
 	for s := start; s < start+length; s++ {
 		seed := s
 		// if seed%10000000 == 0 {
@@ -114,27 +119,32 @@ func solve(start int64, length int64, maps Maps, results chan<- int64) {
 		}
 		minlocation = min(minlocation, seed)
 	}
-	fmt.Println(length, " \t seeds planted, starting from", start, ", with result =", minlocation)
+	rate := int64(float64(length) / time.Since(startTime).Seconds())
+	fmt.Println("\u001b[1mPlanted ", length, "\tseeds from", start, "\tResult =", minlocation, "| Done in", time.Since(startTime).Truncate(time.Second), "-", rate, "seeds/sec\033[0m")
 	results <- minlocation
 }
 
-func PartTwo(file string) int64 {
+func PartTwo(file string, cores int) int64 {
 	seeds, maps := readInput(file)
-
 	N := len(seeds) / 2
 	results := make(chan int64, N)
 
-	var minlocation int64 = math.MaxInt64
+	fmt.Print("Running ", N, " goroutines on ", cores, " cores. ")
+	fmt.Println("Prepare to wait...")
+
+	wp := workerpool.New(cores)
+
 	for i := 0; i < N; i++ {
 		start, length := seeds[i*2], seeds[i*2+1]
-		go solve(start, length, maps, results)
+		wp.Submit(func() { solve(start, length, maps, results) })
 	}
 
-	fmt.Println("Prepare to wait (up to 20min on i5 3.5GHz)")
-
+	var minlocation int64 = math.MaxInt64
 	for a := 1; a <= N; a++ {
 		minlocation = min(minlocation, <-results)
 	}
+
+	wp.StopWait()
 
 	return minlocation
 }
@@ -144,9 +154,13 @@ func main() {
 	fmt.Println("Day 5: If You Give A Seed A Fertilizer")
 	fmt.Println("\tPart One:", PartOne("../aoc-inputs/2023/05/input1.txt")) // 484023871
 	if slices.Index(args, "--bruteforce") != -1 {
-		fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2023/05/input1.txt")) // 46294175
+		cores, err := strconv.Atoi(args[len(args)-1])
+		if err != nil {
+			cores = 4
+		}
+		fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2023/05/input1.txt", cores)) // 46294175
 	} else {
-		fmt.Println("\tPart Two: (skipped by default, run with a '--bruteforce' option and prepare to wait up to 20 min)")
+		fmt.Println("\tPart Two: (skipped by default, run with a '--bruteforce [cores]' option and prepare to wait up to 20 min)")
 	}
 }
 

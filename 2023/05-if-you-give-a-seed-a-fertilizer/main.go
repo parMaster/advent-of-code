@@ -1,7 +1,7 @@
 package main
 
-/*
-date && go build -o torture && ./torture && date
+/* Running on 4 cores:
+date && go build -o torture && ./torture --bruteforce 4 && date
 */
 
 import (
@@ -101,7 +101,6 @@ func solve(start int64, length int64, maps Maps, results chan<- int64) {
 
 	startTime := time.Now()
 	fmt.Println("Planting", length, " \tseeds from", start)
-	// for s := start; s < start+3000000; s++ {
 	for s := start; s < start+length; s++ {
 		seed := s
 		// if seed%10000000 == 0 {
@@ -166,5 +165,5 @@ func main() {
 
 // non-bruteforce solution is totally there, but since I'm havidng fun with multithreading,
 // bruteforce improvements:
-// - Worker pool of # of cores, instead of fan out
+// + Worker pool of # of cores, instead of fan out
 // - Start the _longest_ ranges first

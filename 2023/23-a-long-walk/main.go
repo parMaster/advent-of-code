@@ -106,11 +106,6 @@ func walkSlopes(maze Maze, start [2]int) int {
 // forward:backward stepping map
 var moves = map[[2]int][2]int{{0, 1}: {0, -1}, {1, 0}: {-1, 0}, {0, -1}: {0, 1}, {-1, 0}: {1, 0}}
 
-type H struct {
-	pos [2]int
-	dir [2]int
-}
-
 type Q struct {
 	pos   [2]int
 	dir   [2]int
@@ -131,7 +126,7 @@ func MaxPath(maze Maze) {
 	q := NewStack(Q{})
 	q.Push(Q{pos: start, dir: direction, steps: steps})
 
-	sx, sy := start[0], start[1]
+	var sx, sy int
 	for !q.IsEmpty() {
 
 		curr := q.Pop()
@@ -179,15 +174,13 @@ func MaxPath(maze Maze) {
 			// otherwise - legal position
 			legal = append(legal, [2]int{x, y})
 		}
-		if len(legal) > 0 {
-			for i := 0; i < len(legal); i++ {
-				direction = [2]int{legal[i][0] - sx, legal[i][1] - sy}
-				newQ := Q{pos: legal[i], dir: direction, steps: steps + 1}
-				// if len(legal) > 1 {
-				// 	forkedBefore[Q{pos: legal[i], dir: direction, steps: steps + 1}] = steps + 1
-				// }
-				q.Push(newQ)
-			}
+		for i := range len(legal) {
+			direction = [2]int{legal[i][0] - sx, legal[i][1] - sy}
+			newQ := Q{pos: legal[i], dir: direction, steps: steps + 1}
+			// if len(legal) > 1 {
+			// 	forkedBefore[Q{pos: legal[i], dir: direction, steps: steps + 1}] = steps + 1
+			// }
+			q.Push(newQ)
 		}
 	}
 	log.Println("Max path: ", slices.Max(results))

@@ -9,6 +9,7 @@ import (
 	"math"
 	"os"
 	"regexp"
+	"runtime"
 	"slices"
 	"strconv"
 	"strings"
@@ -31,13 +32,6 @@ type Seeds []int64
 
 func mustInt64(s string) int64 {
 	n, _ := strconv.ParseInt(s, 10, 64)
-	return n
-}
-
-func abs(n int64) int64 {
-	if n < 0 {
-		return -n
-	}
 	return n
 }
 
@@ -155,7 +149,7 @@ func main() {
 	if slices.Index(args, "--bruteforce") != -1 {
 		cores, err := strconv.Atoi(args[len(args)-1])
 		if err != nil {
-			cores = 4
+			cores = runtime.NumCPU()
 		}
 		fmt.Println("\tPart Two:", PartTwo("../aoc-inputs/2023/05/input1.txt", cores)) // 46294175
 	} else {

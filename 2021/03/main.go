@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func countBits(lines []string) map[int]int {
+func countZeroBits(lines []string) map[int]int {
 	m := map[int]int{}
 	for _, l := range lines {
 		for i, c := range l {
@@ -35,7 +35,7 @@ func solve(filename string) (int, int) {
 	f, _ := os.ReadFile(filename)
 	lines := strings.Split(strings.TrimSpace(string(f)), "\n")
 
-	m := countBits(lines)
+	m := countZeroBits(lines)
 
 	gamma, epsilon := 0, 0
 	for k, v := range m {
@@ -51,8 +51,8 @@ func solve(filename string) (int, int) {
 		bit := 0
 		var consider byte
 		for len(lines) > 1 {
-			o2lines := []string{}
-			m := countBits(lines)
+			filteredLines := []string{}
+			m := countZeroBits(lines)
 			if bitCriteria == '1' {
 				consider = byte('0')
 			} else {
@@ -62,12 +62,12 @@ func solve(filename string) (int, int) {
 				consider = bitCriteria
 			}
 
-			for i := 0; i < len(lines); i++ {
-				if lines[i][bit] == consider {
-					o2lines = append(o2lines, lines[i])
+			for _, line := range lines {
+				if line[bit] == consider {
+					filteredLines = append(filteredLines, line)
 				}
 			}
-			lines = slices.Clone(o2lines)
+			lines = slices.Clone(filteredLines)
 			bit++
 		}
 		return binStringToInt(lines[0])

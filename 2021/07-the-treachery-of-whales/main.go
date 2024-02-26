@@ -36,12 +36,8 @@ func solve(filename string) (int, int) {
 			// Sn = n/2[2a + (n − 1) × d]
 			fuel2 += int(float64(fuelRequired) / 2 * float64(2+(fuelRequired-1)*1))
 		}
-		if fuel < minFuel {
-			minFuel = fuel
-		}
-		if fuel2 < minFuel2 {
-			minFuel2 = fuel2
-		}
+		minFuel = min(minFuel, fuel)
+		minFuel2 = min(minFuel2, fuel2)
 	}
 	return minFuel, minFuel2
 }

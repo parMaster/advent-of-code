@@ -101,7 +101,7 @@ func solve(filename string) (int, int) {
 	p1 := 0
 	p2 := 0
 	totalFlashed := 0
-	for step := range 2000 {
+	for step := range 999999 {
 
 		incStep(grid)
 

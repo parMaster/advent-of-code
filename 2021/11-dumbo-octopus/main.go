@@ -101,7 +101,7 @@ func solve(filename string) (int, int) {
 	p1 := 0
 	p2 := 0
 	totalFlashed := 0
-	for step := range 999999 {
+	for step := range 9999 {
 
 		incStep(grid)
 
@@ -137,7 +137,7 @@ func solve(filename string) (int, int) {
 
 func main() {
 	start := time.Now()
-	fmt.Println("Day 10: Dumbo Octopus")
+	fmt.Println("Day 11: Dumbo Octopus")
 	p1, p2 := solve("input.txt")
 	fmt.Println("\tPart One:", p1) // 1625
 	fmt.Println("\tPart Two:", p2) // 244

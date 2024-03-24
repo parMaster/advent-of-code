@@ -92,3 +92,10 @@ Checked a couple of hipothesis for the first part with tests, learned how to che
 
 Second part is still in progress, obviously a pure math problem, has almost nothing to do with programming.
 
+## [Day 25 - Snowverload](https://github.com/parMaster/advent-of-code/tree/main/2023/25-snowverload)
+Desperately didn't want to use "Max Flow Min Cut". So, I solved it with Dijkstra:
+- select two arbitrary nodes of the graph: source and target
+- find the shortest path from the source to the target, then subtract the path from the graph, repeat three times
+- check - if there are two disconnected graphs - that's the solution
+
+It's a brute force, but it works (40-90 sec on 2014 laptop). I'm glad I didn't give up and didn't use the "Max Flow Min Cut" algorithm, because it's a good exercise to implement Dijkstra and to think about the problem in a different way.

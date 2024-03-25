@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"slices"
 	"strings"
@@ -136,7 +137,10 @@ func countIslands(graph map[string][]string) (bool, int) {
 }
 
 func solve(filename string) (int, int) {
-	txt, _ := os.ReadFile(filename)
+	txt, err := os.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
 	lines := strings.Split(strings.TrimSpace(string(txt)), "\n")
 
 	g := map[string][]string{}
@@ -155,24 +159,22 @@ func solve(filename string) (int, int) {
 		}
 	}
 
-	keys := maps.Keys(g)
-	for i, k1 := range keys {
-		for _, k2 := range keys[i+1:] {
-			ok, res := checkPair(g, k1+"-"+k2)
-			if ok {
-				return res, 0
-			}
+	for {
+		keys := maps.Keys(g)
+		k1 := keys[rand.Intn(len(keys))]
+		k2 := keys[rand.Intn(len(keys))]
+		if k1 == k2 {
+			continue
+		}
+
+		ok, res := checkPair(g, k1, k2)
+		if ok {
+			return res, 0
 		}
 	}
-
-	return 0, 0
 }
 
-func checkPair(g map[string][]string, pair string) (bool, int) {
-
-	k1 := strings.Split(pair, "-")[0]
-	k2 := strings.Split(pair, "-")[1]
-
+func checkPair(g map[string][]string, k1, k2 string) (bool, int) {
 	avoidConnections := []string{}
 	for range 3 {
 		path := dijkstra(g, k1, k2, avoidConnections)

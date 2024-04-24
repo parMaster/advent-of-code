@@ -34,7 +34,7 @@ func main() {
 	start := time.Now()
 	fmt.Println("Day 06: Custom Customs")
 	p1, p2 := solve("input.txt")
-	fmt.Println("\tPart One:", p1) //
-	fmt.Println("\tPart Two:", p2) //
+	fmt.Println("\tPart One:", p1) // 6532
+	fmt.Println("\tPart Two:", p2) // 3427
 	fmt.Printf("Done in %.3f seconds \n", time.Since(start).Seconds())
 }

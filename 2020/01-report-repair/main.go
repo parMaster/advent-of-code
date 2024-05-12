@@ -10,17 +10,12 @@ import (
 
 func solve(f string) (p1, p2 int) {
 	nums := read(f)
-	for i, n1 := range nums {
-		for _, n2 := range nums[i:] {
-			if n1+n2 == 2020 {
-				p1 = n1 * n2
-				break
-			}
-		}
-	}
 
 	for i, n1 := range nums {
 		for j, n2 := range nums[i:] {
+			if n1+n2 == 2020 {
+				p1 = n1 * n2
+			}
 			for _, n3 := range nums[j:] {
 				if n1+n2+n3 == 2020 {
 					p2 = n1 * n2 * n3

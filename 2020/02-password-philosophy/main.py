@@ -1,8 +1,8 @@
 import time
 
-def solve():
+def solve(file="input.txt"):
 	p1, p2 = 0, 0
-	lines = open("input.txt", "r").read().splitlines()
+	lines = open(file, "r").read().splitlines()
 	for i in range(len(lines)):
 		parts = lines[i].split(":")
 		pwd = parts[1].strip(" ")

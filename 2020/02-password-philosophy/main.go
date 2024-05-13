@@ -18,17 +18,8 @@ func solve(f string) (p1, p2 int) {
 	}
 
 	for _, in := range input {
-
-		foundOne := 0
-		if in.in[0]-1 < len(in.password) &&
-			in.password[in.in[0]-1] == in.char[0] {
-			foundOne++
-		}
-		if in.in[1]-1 < len(in.password) &&
-			in.password[in.in[1]-1] == in.char[0] {
-			foundOne++
-		}
-		if foundOne == 1 {
+		if (in.password[in.in[0]-1] == in.char[0] && in.password[in.in[1]-1] != in.char[0]) ||
+			(in.password[in.in[0]-1] != in.char[0] && in.password[in.in[1]-1] == in.char[0]) {
 			p2++
 		}
 	}

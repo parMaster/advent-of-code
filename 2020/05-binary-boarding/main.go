@@ -42,22 +42,19 @@ func solve(f string) (p1, p2 int) {
 	lines := strings.Split(strings.TrimSpace(string(in)), "\n")
 
 	seats := []int{}
-	maxSeat := 0
 	for _, line := range lines {
 		row, col := decode(line)
 		seat := row*8 + col
 		seats = append(seats, seat)
-		maxSeat = max(maxSeat, seat)
 	}
-	slices.Sort(seats)
-	for i := 1; i < len(seats); i++ {
-		if seats[i] == seats[i-1]+2 {
-			p2 = seats[i] - 1
-			break
+
+	for i := slices.Min(seats); i <= slices.Max(seats); i++ {
+		if !slices.Contains(seats, i) {
+			return slices.Max(seats), i
 		}
 	}
 
-	return maxSeat, p2
+	return
 }
 
 func main() {

@@ -14,15 +14,15 @@ def solve(file="input.txt"):
 		for f in fields:
 			props[f.split(":")[0]] = f.split(":")[1]
 
-		if "byr" in props.keys() and 1920 <= int(props["byr"]) <= 2002 and \
-			"iyr" in props.keys() and 2010 <= int(props["iyr"]) <= 2020 and \
-			"eyr" in props.keys() and 2020 <= int(props["eyr"]) <= 2030 and \
-			"hgt" in props.keys() and \
-				((props["hgt"].endswith("cm") and 150 <= int(props["hgt"].rstrip("cm")) <= 193) or \
-				(props["hgt"].endswith("in") and 59 <= int(props["hgt"].rstrip("in")) <= 76)) and \
-			"hcl" in props.keys() and re.search("#[0-9a-f]{6}", props["hcl"]) != "None" and len(props["hcl"]) == 7 and \
-			"pid" in props.keys() and re.search("[0-9]{9}", props["pid"]) != "None" and len(props["pid"]) == 9 and \
-			"ecl" in props.keys() and props["ecl"] in ("amb", "blu", "brn", "gry", "grn", "hzl", "oth"):
+		if all(e in props.keys() for e in ("byr", "iyr", "eyr", "hgt", "hcl", "pid", "ecl")) and \
+			1920 <= int(props["byr"]) <= 2002 and \
+			2010 <= int(props["iyr"]) <= 2020 and \
+			2020 <= int(props["eyr"]) <= 2030 and \
+			((props["hgt"].endswith("cm") and 150 <= int(props["hgt"].rstrip("cm")) <= 193) or \
+			(props["hgt"].endswith("in") and 59 <= int(props["hgt"].rstrip("in")) <= 76)) and \
+			re.search("#[0-9a-f]{6}", props["hcl"]) != "None" and len(props["hcl"]) == 7 and \
+			re.search("[0-9]{9}", props["pid"]) != "None" and len(props["pid"]) == 9 and \
+			props["ecl"] in ("amb", "blu", "brn", "gry", "grn", "hzl", "oth"):
 				p2 +=1
 
 		if len(fields) == 8 or (len(fields) == 7 and "cid" not in props.keys()):

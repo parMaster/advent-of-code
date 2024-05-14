@@ -33,11 +33,11 @@ func solve(f string) (p1, p2 int) {
 				x -= len(m[0])
 			}
 
-			if m[y][x] && islope == 0 {
+			if m[y][x] == '#' && islope == 0 {
 				p1++
 			}
 
-			if m[y][x] {
+			if m[y][x] == '#' {
 				p2trees++
 			}
 		}
@@ -47,21 +47,12 @@ func solve(f string) (p1, p2 int) {
 	return
 }
 
-func read(f string) [][]bool {
+func read(f string) [][]rune {
 	in, _ := os.ReadFile(f)
-	m := [][]bool{}
+	var m [][]rune
 	for _, line := range strings.Split(strings.TrimSpace(string(in)), "\n") {
-		l := []bool{}
-		for _, c := range line {
-			if c == '#' {
-				l = append(l, true)
-			} else {
-				l = append(l, false)
-			}
-		}
-		m = append(m, l)
+		m = append(m, []rune(line))
 	}
-
 	return m
 }
 

@@ -9,8 +9,6 @@ import (
 	"time"
 
 	"container/heap"
-
-	"golang.org/x/exp/maps"
 )
 
 // traversing graph once, keeps history of visited nodes and minds the cycles
@@ -159,8 +157,12 @@ func solve(filename string) (int, int) {
 		}
 	}
 
+	var keys []string
+	for k := range g {
+		keys = append(keys, k)
+	}
+
 	for {
-		keys := maps.Keys(g)
 		k1 := keys[rand.Intn(len(keys))]
 		k2 := keys[rand.Intn(len(keys))]
 		if k1 == k2 {
@@ -199,7 +201,7 @@ func checkPair(g map[string][]string, k1, k2 string) (bool, int) {
 func main() {
 	start := time.Now()
 	fmt.Println("Day 25: Snowverload (wait a minute... calculating)")
-	p1, _ := solve("input.txt")
+	p1, _ := solve("../aoc-inputs/2023/25/input.txt")
 	fmt.Println("\tPart One:", p1) // 569904
 	// fmt.Println("\tPart Two:", p2) //
 	fmt.Printf("Done in %.3f seconds \n", time.Since(start).Seconds())

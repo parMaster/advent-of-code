@@ -1,6 +1,6 @@
 module github.com/parMaster/advent-of-code/2023
 
-go 1.22
+go 1.23.3
 
 require (
 	github.com/gammazero/workerpool v1.1.3

@@ -7,8 +7,6 @@ import (
 	"os"
 	"slices"
 	"strings"
-
-	"golang.org/x/exp/maps"
 )
 
 type Brick struct {
@@ -38,7 +36,10 @@ func drop(s Stack) (newStack Stack, changed int) {
 	newStack = Stack{} // key is a brick's bottom coordinate
 	tops := Stack{}    // key is a brick's top coordinate
 
-	levels := maps.Keys(s)
+	var levels []int
+	for level := range s {
+		levels = append(levels, level)
+	}
 	slices.Sort(levels)
 	for level := 1; level <= levels[len(levels)-1]; level++ {
 		// for all bricks that start on this level:

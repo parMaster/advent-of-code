@@ -6,8 +6,6 @@ import (
 	"os"
 	"slices"
 	"strings"
-
-	"golang.org/x/exp/maps"
 )
 
 // directions	↑ → ↓ ←
@@ -69,7 +67,11 @@ func giantLoop(m maze, pos image.Point) (int, loop) {
 
 			if connects(m, pos, newPos) && connects(m, newPos, pos) {
 				if v[newPos] == 1 {
-					return slices.Max(maps.Values(v)) / 2, v
+					smax := 0
+					for _, v := range v {
+						smax = max(smax, v)
+					}
+					return smax / 2, v
 				}
 				if v[newPos] == 0 {
 					v[newPos] = v[pos] + 1

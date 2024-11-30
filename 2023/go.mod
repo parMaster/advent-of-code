@@ -4,7 +4,7 @@ go 1.23.3
 
 require (
 	github.com/gammazero/workerpool v1.1.3
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.10.0
 	golang.org/x/exp v0.0.0-20231214170342-aacd6d4b4611
 	gonum.org/v1/plot v0.14.0
 )

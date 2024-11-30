@@ -6,8 +6,6 @@ import (
 	"os"
 	"slices"
 	"strings"
-
-	"golang.org/x/exp/maps"
 )
 
 type galaxies map[image.Point]int
@@ -101,7 +99,10 @@ func solve(f string, expansion int) int {
 		g.show()
 	}
 
-	points := maps.Keys(g)
+	var points []image.Point
+	for p := range g {
+		points = append(points, p)
+	}
 
 	sum := 0
 	for i := 0; i < len(points); i++ {

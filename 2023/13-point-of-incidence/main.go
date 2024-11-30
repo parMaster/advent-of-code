@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
-	"golang.org/x/exp/maps"
 )
 
 type set struct {
@@ -78,11 +76,11 @@ func solve(f string, smudgesAllowed int) int {
 	sum := 0
 	for _, s := range sets {
 		m := findMirrors(s.lines, smudgesAllowed)
-		for _, r := range maps.Keys(m) {
+		for r := range m {
 			sum += r * 100
 		}
 		m = findMirrors(s.cols, smudgesAllowed)
-		for _, r := range maps.Keys(m) {
+		for r := range m {
 			sum += r
 		}
 	}

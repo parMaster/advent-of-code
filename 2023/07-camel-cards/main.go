@@ -7,8 +7,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-
-	"golang.org/x/exp/maps"
 )
 
 var orders = map[rune]int{'2': 0, '3': 1, '4': 2, '5': 3, '6': 4, '7': 5, '8': 6, '9': 7, 'T': 8, 'J': 9, 'Q': 10, 'K': 11, 'A': 12}
@@ -36,7 +34,11 @@ func (h hand) strength() int {
 	}
 	// WHERE card != 'J'
 
-	s := maps.Values(g)
+	var s []int
+	for _, v := range g {
+		s = append(s, v)
+	}
+
 	slices.Sort(s)
 	slices.Reverse(s)
 	// ... ORDER BY cards DESC"

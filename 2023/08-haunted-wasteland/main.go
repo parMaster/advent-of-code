@@ -5,8 +5,6 @@ import (
 	"os"
 	"slices"
 	"strings"
-
-	"golang.org/x/exp/maps"
 )
 
 var dir = map[rune]int{'L': 0, 'R': 1}
@@ -43,7 +41,7 @@ func PartOne(f string) int {
 func PartTwo(f string, lcm func([]int) int) int {
 	results := []int{}
 	route, m := input(f)
-	for _, c := range maps.Keys(m) {
+	for c := range m {
 		if c[2] == 'A' {
 			i := 0
 			// c := m k // current, start

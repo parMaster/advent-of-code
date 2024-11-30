@@ -6,8 +6,6 @@ import (
 	"os"
 	"slices"
 	"strings"
-
-	"golang.org/x/exp/maps"
 )
 
 type Maze [][]rune
@@ -58,7 +56,7 @@ func walkSlopes(maze Maze, start [2]int) int {
 		for slope, move := range moves {
 
 			// current position is a slope? then move only downhill
-			if slices.Index(maps.Keys(moves), maze[sy][sx]) != -1 && maze[sy][sx] != slope {
+			if _, ok := moves[maze[sy][sx]]; ok && maze[sy][sx] != slope {
 				continue
 			}
 
@@ -78,7 +76,7 @@ func walkSlopes(maze Maze, start [2]int) int {
 			}
 
 			// is it a slope? downhill slope?
-			if slices.Index(maps.Keys(moves), maze[y][x]) != -1 && maze[y][x] != slope {
+			if _, ok := moves[maze[y][x]]; ok && maze[y][x] != slope {
 				continue
 			}
 

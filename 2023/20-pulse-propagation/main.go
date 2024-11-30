@@ -5,8 +5,6 @@ import (
 	"os"
 	"slices"
 	"strings"
-
-	"golang.org/x/exp/maps"
 )
 
 type Action byte
@@ -145,7 +143,11 @@ func main() {
 				}
 				if len(cons) == 0 {
 					// Least Common Multiple of these cycles must be the button press when all of them are equally high
-					fmt.Println("\tPart Two:", lcm(maps.Values(cycles))) // 212986464842911
+					var cyclesValues []int
+					for c := range cycles {
+						cyclesValues = append(cyclesValues, cycles[c])
+					}
+					fmt.Println("\tPart Two:", lcm(cyclesValues)) // 212986464842911
 					os.Exit(0)
 				}
 
@@ -194,8 +196,13 @@ func (m *Modules) call(p Pulse) []Pulse {
 		receiver.inputs[p.from] = p.pulse
 		(*m)[p.to] = receiver
 
+		var receiverInputs []PulseType
+		for ri := range receiver.inputs {
+			receiverInputs = append(receiverInputs, receiver.inputs[ri])
+		}
+
 		nextPulse := high
-		if !slices.Contains(maps.Values(receiver.inputs), low) {
+		if !slices.Contains(receiverInputs, low) {
 			nextPulse = low
 		}
 

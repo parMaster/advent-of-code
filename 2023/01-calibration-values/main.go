@@ -5,8 +5,6 @@ import (
 	"os"
 	"regexp"
 	"strings"
-
-	"golang.org/x/exp/maps"
 )
 
 func stringsFile(filename string) ([]string, error) {
@@ -86,8 +84,13 @@ func PartTwo(file string) int {
 
 	s, _ := stringsFile(file)
 
-	first := regexp.MustCompile(`(` + strings.Join(maps.Keys(strNumbers), "|") + `)`)
-	last := regexp.MustCompile(`.*(` + strings.Join(maps.Keys(strNumbers), "|") + `)`)
+	var strNumbersKeys []string
+	for s := range strNumbers {
+		strNumbersKeys = append(strNumbersKeys, s)
+	}
+
+	first := regexp.MustCompile(`(` + strings.Join(strNumbersKeys, "|") + `)`)
+	last := regexp.MustCompile(`.*(` + strings.Join(strNumbersKeys, "|") + `)`)
 
 	var sum int
 	for _, l := range s {

@@ -37,10 +37,10 @@ func read(filename string) []policy {
 	fc, _ := os.ReadFile(filename)
 
 	lines := strings.Split(strings.TrimSpace(string(fc)), "\n")
-	pa := []policy{}
+	var pa []policy
 	for _, line := range lines {
 		pt := strings.Split(line, " ")
-		p := policy{}
+		var p policy
 		json.Unmarshal([]byte("["+strings.Replace(pt[0], "-", ",", 1)+"]"), &p.in)
 		p.char = string(pt[1][0])
 		p.password = pt[2]

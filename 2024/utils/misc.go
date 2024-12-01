@@ -33,7 +33,12 @@ func MustInt64(s string) int64 {
 	return n
 }
 
-func ABS(n int64) int64 {
+func MustInt(s string) int {
+	n, _ := strconv.ParseInt(s, 10, 32)
+	return int(n)
+}
+
+func ABS[T int | int64](n T) T {
 	if n < 0 {
 		return -n
 	}

@@ -2,32 +2,36 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"slices"
+	"strings"
 	"time"
-
-	"github.com/parMaster/advent-of-code/2024/utils"
 )
 
-func solve(f string) (p1, p2 int64) {
-	numbers := utils.ReadLines(f)
-
-	var left, right []int64
-	for i := 0; i < len(numbers); i++ {
-		left = append(left, utils.MustInt64(numbers[i]))
-		i++
-		right = append(right, utils.MustInt64(numbers[i]))
+func solve(f string) (p1, p2 int) {
+	s, _ := os.ReadFile(f)
+	var left, right []int
+	for _, line := range strings.Split(strings.TrimSpace(string(s)), "\n") {
+		var l, r int
+		fmt.Sscanf(line, "%d   %d", &l, &r)
+		left = append(left, l)
+		right = append(right, r)
 	}
 
 	// Part One
 	slices.Sort(left)
 	slices.Sort(right)
 	for i := range left {
-		p1 += utils.ABS(int64(left[i] - right[i]))
+		if left[i] > right[i] {
+			p1 += left[i] - right[i]
+		} else {
+			p1 += right[i] - left[i]
+		}
 	}
 
 	// Part Two
 	for _, l := range left {
-		var cnt int64
+		var cnt int
 		for _, r := range right {
 			if l == r {
 				cnt++

@@ -5,7 +5,6 @@ go 1.23.3
 require (
 	github.com/gammazero/workerpool v1.1.3
 	github.com/stretchr/testify v1.10.0
-	golang.org/x/exp v0.0.0-20231214170342-aacd6d4b4611
 	gonum.org/v1/plot v0.14.0
 )
 
@@ -20,7 +19,8 @@ require (
 	github.com/go-pdf/fpdf v0.9.0 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	golang.org/x/image v0.14.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/exp v0.0.0-20231214170342-aacd6d4b4611 // indirect
+	golang.org/x/image v0.18.0 // indirect
+	golang.org/x/text v0.16.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

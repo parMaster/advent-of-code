@@ -4,22 +4,19 @@ import (
 	"fmt"
 	"os"
 	"slices"
-	"strconv"
 	"strings"
 	"time"
+
+	"encoding/json"
 )
 
 func read(f string) [][]int {
 	res := [][]int{}
 	s, _ := os.ReadFile(f)
 	lines := strings.Split(string(s), "\n")
-	for _, l := range lines {
-		line := strings.Split(l, " ")
-		levels := []int{}
-		for i := range line {
-			n, _ := strconv.ParseInt(line[i], 10, 32)
-			levels = append(levels, int(n))
-		}
+	for _, line := range lines {
+		var levels []int
+		json.Unmarshal([]byte("["+strings.ReplaceAll(line, " ", ",")+"]"), &levels)
 		res = append(res, levels)
 	}
 	return res
@@ -60,16 +57,6 @@ func solve(f string) (p1, p2 int) {
 	return p1, p2
 }
 
-func main() {
-	start := time.Now()
-	fmt.Println("Day 02: Red-Nosed Reports")
-	// p1, p2 := solve("input_pub.txt")
-	p1, p2 := solve("../aoc-inputs/2024/02/input.txt")
-	fmt.Println("\tPart One:", p1) // 680
-	fmt.Println("\tPart Two:", p2) // 710
-	fmt.Printf("Done in %.3f seconds \n", time.Since(start).Seconds())
-}
-
 func abs[T int | int64](n T) T {
 	if n < 0 {
 		return -n
@@ -79,4 +66,14 @@ func abs[T int | int64](n T) T {
 
 func sign[T int | int64](n T) T {
 	return n / abs(n)
+}
+
+func main() {
+	start := time.Now()
+	fmt.Println("Day 02: Red-Nosed Reports")
+	// p1, p2 := solve("input_pub.txt")
+	p1, p2 := solve("../aoc-inputs/2024/02/input.txt")
+	fmt.Println("\tPart One:", p1) // 680
+	fmt.Println("\tPart Two:", p2) // 710
+	fmt.Printf("Done in %.3f seconds \n", time.Since(start).Seconds())
 }

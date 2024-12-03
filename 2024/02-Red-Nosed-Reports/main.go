@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -49,10 +50,7 @@ func solve(f string) (p1, p2 int) {
 		}
 
 		for i := range r {
-			rProbe := make([]int, len(r)-1)
-			copy(rProbe, r[:i])
-			copy(rProbe[i:], r[i+1:])
-			if safeReport(rProbe) {
+			if safeReport(slices.Delete(slices.Clone(r), i, i+1)) {
 				p2++
 				break
 			}
@@ -61,45 +59,6 @@ func solve(f string) (p1, p2 int) {
 
 	return p1, p2
 }
-
-// func almost_linear_solution(f string) (p1, p2 int) {
-// 	reports := read(f)
-// 	for _, r := range reports {
-// 		fmt.Println(r)
-
-// 		fails := 0
-// 		failed := true // presume
-// 		for {
-
-// 			if len(r) <= 2 || !failed || fails > 1 {
-// 				break
-// 			}
-// 			failed = false
-// 			for i := 1; i < len(r)-1; i++ {
-// 				if r[i-1] == r[i] || r[i] == r[i+1] ||
-// 					abs(r[i]-r[i-1]) > 3 || abs(r[i+1]-r[i]) > 3 ||
-// 					sign(r[i]-r[i-1]) != sign(r[i+1]-r[i]) {
-// 					r = slices.Delete(r, i, i+1)
-// 					fails++
-// 					failed = true
-// 					break
-// 				}
-// 			}
-// 		}
-// 		if fails == 0 {
-// 			p1++
-// 		}
-// 		if fails <= 1 {
-// 			p2++
-// 		}
-// 		if fails >= 1 {
-// 			fmt.Println(r, fails)
-// 			fmt.Println()
-// 		}
-
-// 	}
-// 	return p1, p2
-// }
 
 func main() {
 	start := time.Now()

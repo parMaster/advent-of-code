@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"runtime"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -21,32 +23,51 @@ func check(test, acc uint64, nums []uint64, concat bool) bool {
 		return false
 	}
 
-	res := false
-	var con uint64
+	var r1, r2, rc bool
 	if concat {
+		var con uint64
 		fmt.Sscanf(fmt.Sprintf("%d%d", acc, nums[0]), "%d", &con)
-		res = res || check(test, con, nums[1:], concat)
+		rc = check(test, con, nums[1:], concat)
 	}
+	r1 = check(test, acc+nums[0], nums[1:], concat)
 
-	return res ||
-		check(test, acc+nums[0], nums[1:], concat) ||
-		check(test, acc*nums[0], nums[1:], concat)
+	r2 = check(test, acc*nums[0], nums[1:], concat)
+
+	return rc || r1 || r2
 }
 
 func solve(f string) (p1, p2 uint64) {
 	in, _ := os.ReadFile(f)
-	for _, l := range strings.Split(string(in), "\n") {
+	lines := strings.Split(string(in), "\n")
+
+	throttle := make(chan struct{}, runtime.NumCPU())
+	var rw sync.Mutex
+	var wg sync.WaitGroup
+	wg.Add(len(lines))
+
+	for _, l := range lines {
 		var nums []uint64
 		json.Unmarshal([]byte("["+strings.ReplaceAll(strings.ReplaceAll(l, ":", ""), " ", ",")+"]"), &nums)
 		test := nums[0]
 		nums = nums[1:]
 
-		if check(test, nums[0], nums[1:], false) {
-			p1 += test
-		} else if check(test, nums[0], nums[1:], true) {
-			p2 += test
-		}
+		throttle <- struct{}{}
+		go func() {
+			var p1r, p2r uint64
+			if check(test, nums[0], nums[1:], false) {
+				p1r = test
+			} else if check(test, nums[0], nums[1:], true) {
+				p2r = test
+			}
+			rw.Lock()
+			p1 += p1r
+			p2 += p2r
+			rw.Unlock()
+			<-throttle
+			wg.Done()
+		}()
 	}
+	wg.Wait()
 	p2 += p1
 
 	return

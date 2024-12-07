@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"image"
 	"slices"
 	"strconv"
@@ -151,4 +152,15 @@ var vis = map[rune]string{
 	'F': "┌",
 	'.': " ",
 	'S': "S",
+}
+
+func all(res uint64, nums []uint64) []uint64 {
+	if len(nums) == 0 {
+		return []uint64{res}
+	}
+
+	var con uint64
+	fmt.Sscanf(fmt.Sprintf("%d%d", res, nums[0]), "%d", &con)
+
+	return append(all(res+nums[0], nums[1:]), all(res*nums[0], nums[1:])...)
 }

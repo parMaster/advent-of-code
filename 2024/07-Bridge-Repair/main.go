@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -12,7 +13,7 @@ import (
 
 // https://adventofcode.com/2024/day/7
 
-func check(test, acc uint64, nums []uint64, concat bool) bool {
+func check(test, acc int64, nums []int64, concat bool) bool {
 	if len(nums) == 0 {
 		if test == acc {
 			return true
@@ -25,8 +26,7 @@ func check(test, acc uint64, nums []uint64, concat bool) bool {
 
 	var r1, r2, rc bool
 	if concat {
-		var con uint64
-		fmt.Sscanf(fmt.Sprintf("%d%d", acc, nums[0]), "%d", &con)
+		con, _ := strconv.ParseInt(strconv.FormatInt(acc, 10)+strconv.FormatInt(nums[0], 10), 10, 64)
 		rc = check(test, con, nums[1:], concat)
 	}
 	r1 = check(test, acc+nums[0], nums[1:], concat)
@@ -36,7 +36,7 @@ func check(test, acc uint64, nums []uint64, concat bool) bool {
 	return rc || r1 || r2
 }
 
-func solve(f string) (p1, p2 uint64) {
+func solve(f string) (p1, p2 int64) {
 	in, _ := os.ReadFile(f)
 	lines := strings.Split(string(in), "\n")
 
@@ -46,14 +46,14 @@ func solve(f string) (p1, p2 uint64) {
 	wg.Add(len(lines))
 
 	for _, l := range lines {
-		var nums []uint64
+		var nums []int64
 		json.Unmarshal([]byte("["+strings.ReplaceAll(strings.ReplaceAll(l, ":", ""), " ", ",")+"]"), &nums)
 		test := nums[0]
 		nums = nums[1:]
 
 		throttle <- struct{}{}
 		go func() {
-			var p1r, p2r uint64
+			var p1r, p2r int64
 			if check(test, nums[0], nums[1:], false) {
 				p1r = test
 			} else if check(test, nums[0], nums[1:], true) {

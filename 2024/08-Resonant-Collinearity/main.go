@@ -10,23 +10,16 @@ import (
 
 type Field map[image.Point]rune
 
-func ReadField(in string) (m Field, ant map[rune][]image.Point, w int, h int) {
-	m = make(map[image.Point]rune)
+func ReadField(in string) (f Field, ant map[rune][]image.Point, w int, h int) {
+	f = make(map[image.Point]rune)
 	ant = make(map[rune][]image.Point)
 	for y, l := range strings.Split(strings.TrimSpace(string(in)), "\n") {
 		w = len(l) - 1
 		h = y
 		for x, r := range strings.TrimSpace(l) {
 			if r != '.' {
-				p := image.Point{x, y}
-				m[p] = r
-				t, ok := ant[r]
-				if ok {
-					t = append(t, p)
-				} else {
-					t = []image.Point{p}
-				}
-				ant[r] = t
+				f[image.Point{x, y}] = r
+				ant[r] = append(ant[r], image.Point{x, y})
 			}
 		}
 	}
@@ -43,16 +36,17 @@ func solve(file string) (p1, p2 int) {
 		for _, ant := range ants {
 			for _, pair := range ants {
 				dist := ant.Sub(pair)
+
 				for mul := range max(w, h) {
 					delta := dist.Mul(mul)
 					for _, pt := range []image.Point{
 						ant.Add(delta), ant.Sub(delta),
 					} {
-						if mul == 1 && pt.In(bounds) && !pt.Eq(pair) && !pt.Eq(ant) {
-							mp1[pt] = true
-						}
 						if pt.In(bounds) {
 							mp2[pt] = true
+							if mul == 1 && !pt.Eq(pair) && !pt.Eq(ant) {
+								mp1[pt] = true
+							}
 						}
 					}
 				}

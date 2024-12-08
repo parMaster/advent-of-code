@@ -35,21 +35,20 @@ func ReadField(in string) (m Field, ant map[rune][]image.Point, w int, h int) {
 
 func solve(file string) (p1, p2 int) {
 	in, _ := os.ReadFile(file)
-	f, ant, w, h := ReadField(string(in))
+	f, freqAntenas, w, h := ReadField(string(in))
 
 	bounds := image.Rect(0, 0, w+1, h+1)
-	mp1 := map[image.Point]bool{}
-	mp2 := map[image.Point]bool{}
-	for _, ants := range ant {
-		for ai, a := range ants {
-			for _, pair := range ants[ai+1:] {
-				dist := a.Sub(pair)
-				for mul := range max(w, h) / 2 {
+	mp1, mp2 := map[image.Point]bool{}, map[image.Point]bool{}
+	for _, ants := range freqAntenas {
+		for _, ant := range ants {
+			for _, pair := range ants {
+				dist := ant.Sub(pair)
+				for mul := range max(w, h) {
 					delta := dist.Mul(mul)
 					for _, pt := range []image.Point{
-						a.Add(delta), a.Sub(delta), pair.Add(delta), pair.Sub(delta),
+						ant.Add(delta), ant.Sub(delta),
 					} {
-						if mul == 1 && pt.In(bounds) && !pt.Eq(pair) && !pt.Eq(a) {
+						if mul == 1 && pt.In(bounds) && !pt.Eq(pair) && !pt.Eq(ant) {
 							mp1[pt] = true
 						}
 						if pt.In(bounds) {

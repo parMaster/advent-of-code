@@ -70,15 +70,11 @@ func p2(in []int) (res uint64) {
 			if !m[right].space {
 				for left, t := range m[:right] {
 					if t.space && t.size >= m[right].size {
-						m1 := slices.Clone(m[:left])
-						m1 = append(m1, m[right])
+						m[left] = m[right]
 						m[right].space = true
 						if t.size > m[right].size {
-							new := num{true, t.size - m[right].size, 0}
-							m1 = append(m1, new)
+							m = slices.Insert(m, left+1, num{true, t.size - m[right].size, 0})
 						}
-						m1 = append(m1, m[left+1:]...)
-						m = m1
 						retry = true
 						break
 					}

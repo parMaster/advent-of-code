@@ -2,32 +2,9 @@ package utils
 
 import (
 	"fmt"
-	"image"
 	"slices"
 	"strconv"
 )
-
-// directions   ↖ ↑ ↗ → ↘ ↓ ↙ ←
-// directions	0 1 2 3 4 5 6 7
-var Dir = []image.Point{{-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}}
-
-// directions	↑ → ↓ ←
-// directions	0 1 2 3
-var XYDir = []image.Point{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
-var DiagDir = []image.Point{{-1, -1}, {1, -1}, {-1, 1}, {1, 1}}
-
-var ASCIIBlocks = map[string]string{"full": "██", "half": "▒▒", "empty": "░░"}
-
-func ABSPoint(d image.Point) image.Point {
-	if d.X < 0 {
-		d.X = -d.X
-	}
-
-	if d.Y < 0 {
-		d.Y = -d.Y
-	}
-	return d
-}
 
 func MustInt64(s string) int64 {
 	n, _ := strconv.ParseInt(s, 10, 64)

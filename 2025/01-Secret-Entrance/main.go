@@ -14,24 +14,29 @@ func solve(file string) (p1, p2 int) {
 	f, _ := os.ReadFile(file)
 	for l := range strings.SplitSeq(string(f), "\n") {
 		n, _ := strconv.Atoi(l[1:])
-		n = n % 100
 
-		switch l[0] {
-		case 'L':
-			dial -= n
-			if dial < 0 {
-				dial = 100 + dial
+		for range n {
+			if dial == 0 {
+				p2++
 			}
-		case 'R':
-			dial += n
-			dial = dial % 100
+
+			switch l[0] {
+			case 'L':
+				dial -= 1
+			case 'R':
+				dial += 1
+			}
+
+			if dial < 0 {
+				dial = 99
+			}
+
+			dial %= 100
 		}
 
 		if dial == 0 {
 			p1++
 		}
-
-		// fmt.Println(n, dial)
 	}
 
 	return p1, p2
@@ -43,6 +48,6 @@ func main() {
 	p1, p2 := solve("../aoc-inputs/2025/01/input.txt")
 	// p1, p2 := solve("input-pub.txt")
 	fmt.Println("\tPart One:", p1) // 1064
-	fmt.Println("\tPart Two:", p2) //
+	fmt.Println("\tPart Two:", p2) // 6122
 	fmt.Printf("Done in %.3f seconds \n", time.Since(start).Seconds())
 }

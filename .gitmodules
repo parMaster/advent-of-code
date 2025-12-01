@@ -7,3 +7,6 @@
 [submodule "2024/aoc-inputs"]
 	path = 2024/aoc-inputs
 	url = git@github.com:parMaster/aoc-inputs.git
+[submodule "2025/aoc-inputs"]
+	path = 2025/aoc-inputs
+	url = https://github.com/parMaster/aoc-inputs.git

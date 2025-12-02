@@ -4,18 +4,15 @@ import (
 	"fmt"
 	"math"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
 
 func solve(file string) (p1, p2 int) {
 	f, _ := os.ReadFile(file)
+	var lStart, lEnd int
 	for r := range strings.SplitSeq(string(f), ",") {
-
-		limits := strings.Split(r, "-")
-		lStart, _ := strconv.Atoi(limits[0])
-		lEnd, _ := strconv.Atoi(limits[1])
+		fmt.Sscanf(r, "%d-%d", &lStart, &lEnd)
 
 		for n := lStart; n <= lEnd; n++ {
 			l := int(math.Log10(float64(n))) + 1

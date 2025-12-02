@@ -16,7 +16,7 @@ func solve(file string) (p1, p2 int) {
 		n, _ := strconv.Atoi(l[1:])
 
 		for range n {
-			if dial == 0 {
+			if dial%100 == 0 {
 				p2++
 			}
 
@@ -26,15 +26,9 @@ func solve(file string) (p1, p2 int) {
 			case 'R':
 				dial += 1
 			}
-
-			if dial < 0 {
-				dial = 99
-			}
-
-			dial %= 100
 		}
 
-		if dial == 0 {
+		if dial%100 == 0 {
 			p1++
 		}
 	}

@@ -51,6 +51,24 @@ func (g Grid) Show(r image.Point, bounds image.Rectangle) {
 	fmt.Println()
 }
 
+func (g Grid) Render(r image.Point, bounds image.Rectangle, palette map[rune]string) {
+	fmt.Println(bounds.Max.X, "x", bounds.Max.Y, ":")
+	for y := 0; y <= bounds.Max.Y; y++ {
+		for x := 0; x <= bounds.Max.X; x++ {
+
+			if _, ok := palette[g[image.Pt(x, y)]]; ok {
+				fmt.Print(ASCIIBlocks[palette[g[image.Pt(x, y)]]])
+			} else {
+				fmt.Print(ASCIIBlocks["empty"])
+			}
+
+			// fmt.Print(string(g[image.Pt(x, y)]))
+		}
+		fmt.Println()
+	}
+	fmt.Println()
+}
+
 func ABSPoint(d image.Point) image.Point {
 	if d.X < 0 {
 		d.X = -d.X

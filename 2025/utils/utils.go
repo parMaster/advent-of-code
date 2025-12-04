@@ -9,8 +9,7 @@ import (
 func ReadLinesOfNumbers(f string) [][]int {
 	res := [][]int{}
 	s, _ := os.ReadFile(f)
-	lines := strings.Split(string(s), "\n")
-	for _, line := range lines {
+	for line := range strings.SplitSeq(string(s), "\n") {
 		var levels []int
 		json.Unmarshal([]byte(line), &levels)
 		res = append(res, levels)

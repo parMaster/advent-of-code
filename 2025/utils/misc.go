@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"slices"
 	"strconv"
 )
@@ -42,7 +41,7 @@ func AllSame(a []int) bool {
 }
 
 func AllFunc[V any](a []V, f func(V) bool) bool {
-	for i := 0; i < len(a); i++ {
+	for i := range a {
 		if !f(a[i]) {
 			return false
 		}
@@ -131,13 +130,23 @@ var vis = map[rune]string{
 	'S': "S",
 }
 
-func all(res uint64, nums []uint64) []uint64 {
+// all recursive combinations of sum and multiplication of nums slice.
+// always evaluated left-to-right, not according to precedence rules.
+// e.g. for slice 1,2,3 input is all(1, [2,3]), which means:
+// 1+2+3 => 3+3 => 6
+// 1+2*3 => 3*3 => 9
+// 1*2+3 => 2+3 => 5
+// 1*2*3 => 2*3 => 6
+func all(res uint64, nums []uint64) (out []uint64) {
 	if len(nums) == 0 {
 		return []uint64{res}
 	}
 
-	var con uint64
-	fmt.Sscanf(fmt.Sprintf("%d%d", res, nums[0]), "%d", &con)
+	n := nums[0]
+	rest := nums[1:]
 
-	return append(all(res+nums[0], nums[1:]), all(res*nums[0], nums[1:])...)
+	out = append(out, all(res+n, rest)...)
+	out = append(out, all(res*n, rest)...)
+
+	return out
 }

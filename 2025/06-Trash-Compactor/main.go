@@ -40,6 +40,23 @@ func solve(file string) (p1, p2 int) {
 	}
 
 	// p2
+	reduce := func(nums []string, oper byte) (res int) {
+		if oper == '*' {
+			res = 1
+		}
+		for _, v := range nums {
+			if intV, _ := strconv.Atoi(strings.Trim(v, " ")); intV > 0 {
+				switch oper {
+				case '*':
+					res *= intV
+				default:
+					res += intV
+				}
+			}
+		}
+		return res
+	}
+
 	nums := []string{}
 	for i := len(lines[0]) - 1; i >= 0; i-- {
 		num := ""
@@ -51,29 +68,13 @@ func solve(file string) (p1, p2 int) {
 			}
 
 			switch lines[j][i] {
-			case '*':
-				res := 1
-				for _, v := range nums {
-					if intV, _ := strconv.Atoi(strings.Trim(v, " ")); intV > 0 {
-						res *= intV
-					}
-				}
-				p2 += res
+			case '*', '+':
+				p2 += reduce(nums, lines[j][i])
 				nums = []string{}
-			case '+':
-				res := 0
-				for _, v := range nums {
-					intV, _ := strconv.Atoi(strings.Trim(v, " "))
-					res += intV
-				}
-				p2 += res
-				nums = []string{}
-
 			default:
 				num = num + string(lines[j][i])
 			}
 		}
-
 	}
 
 	return

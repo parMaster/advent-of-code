@@ -18,7 +18,7 @@ func solve(file string) (p1, p2 int) {
 			l := int(math.Log10(float64(n))) + 1
 
 			// p1
-			factor := int(math.Pow(10, float64(l/2)))
+			factor := int(math.Pow10(l / 2))
 			if n/factor == n%factor {
 				p1 += n
 			}
@@ -29,7 +29,7 @@ func solve(file string) (p1, p2 int) {
 					continue
 				}
 
-				factor := int(math.Pow(10, float64(lRange)))
+				factor := int(math.Pow10(lRange))
 
 				n2 := n
 				sequence := n2 % factor

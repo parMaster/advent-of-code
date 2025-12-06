@@ -24,7 +24,7 @@ func maxSet(line []int, setSize int) int {
 		// fmt.Println("line: ", line)
 		maxn, maxv := maxJolt(line[:len(line)-(n-1)])
 		line = line[maxn+1:]
-		lineJolt += maxv * (int(math.Pow(10, float64(n-1))))
+		lineJolt += maxv * (int(math.Pow10(n - 1)))
 		// fmt.Println("maxn, maxv, lineJolt", maxn, maxv, lineJolt)
 	}
 	return lineJolt

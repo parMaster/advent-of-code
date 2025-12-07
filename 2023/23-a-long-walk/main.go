@@ -105,24 +105,25 @@ func walkSlopes(maze Maze, start [2]int) int {
 var moves = map[[2]int][2]int{{0, 1}: {0, -1}, {1, 0}: {-1, 0}, {0, -1}: {0, 1}, {-1, 0}: {1, 0}}
 
 type Q struct {
-	pos   [2]int
-	dir   [2]int
-	steps int
+	pos     [2]int
+	dir     [2]int
+	steps   int
+	visited map[[2]int]bool
 }
 
 func MaxPath(maze Maze) {
 	maze[0][1] = '#'
 
-	forkedBefore := map[Q]int{}
+	// forkedBefore := map[Q]int{}
 	maxResult := 0
 	results := []int{}
 	start := [2]int{1, 1}
 	steps := 1
 	direction := [2]int{1, 0}
-	visited := [][2]int{start}
+	// visited := map[[2]int]bool{start: true}
 
 	q := NewStack(Q{})
-	q.Push(Q{pos: start, dir: direction, steps: steps})
+	q.Push(Q{pos: start, dir: direction, steps: steps, visited: map[[2]int]bool{start: true}})
 
 	var sx, sy int
 	for !q.IsEmpty() {
@@ -131,19 +132,17 @@ func MaxPath(maze Maze) {
 		sx, sy = curr.pos[0], curr.pos[1]
 		steps = curr.steps
 		direction = curr.dir
+		visited := curr.visited
 
 		if sx == len(maze[0])-2 && sy == len(maze)-1 {
 
 			if steps > maxResult {
 				maxResult = steps
-				log.Println(steps, len(visited), len(forkedBefore))
+				log.Println(steps, len(visited))
 			}
 			results = append(results, steps)
 			continue
 		}
-
-		visited = visited[:steps]
-		visited = append(visited, [2]int{sx, sy})
 
 		legal := [][2]int{}
 		for move := range moves {
@@ -156,7 +155,7 @@ func MaxPath(maze Maze) {
 			}
 
 			// was here before?
-			if slices.Index(visited, [2]int{x, y}) != -1 {
+			if visited[[2]int{x, y}] {
 				continue
 			}
 
@@ -174,7 +173,17 @@ func MaxPath(maze Maze) {
 		}
 		for i := range len(legal) {
 			direction = [2]int{legal[i][0] - sx, legal[i][1] - sy}
-			newQ := Q{pos: legal[i], dir: direction, steps: steps + 1}
+			newVisited := make(map[[2]int]bool, len(visited)+1)
+			for k := range visited {
+				newVisited[k] = true
+			}
+			newVisited[legal[i]] = true
+			newQ := Q{
+				pos:     legal[i],
+				dir:     direction,
+				steps:   steps + 1,
+				visited: newVisited,
+			}
 			// if len(legal) > 1 {
 			// 	forkedBefore[Q{pos: legal[i], dir: direction, steps: steps + 1}] = steps + 1
 			// }
@@ -186,16 +195,17 @@ func MaxPath(maze Maze) {
 
 func main() {
 	maze := readLines("../aoc-inputs/2023/23/input.txt")
+	// maze := readLines("input-pub.txt")
 	fmt.Println("Day 23: A Long Walk")
 	if slices.Contains(os.Args[1:], "--visual") {
 		showMaze(maze, true)
 	}
 	fmt.Println("\tPart One:", walkSlopes(maze, [2]int{1, 1})) // 2386
 
-	if slices.Contains(os.Args[1:], "--bruteforce") {
-		fmt.Println("\tPart Two: will print preliminary results every time new max path is found. It's a really long walk...")
-		MaxPath(maze) // 6246
-	} else {
-		fmt.Println("\tPart Two: (skipped by default, run with a '--bruteforce' option and prepare to wait up to forever)")
-	}
+	// if slices.Contains(os.Args[1:], "--bruteforce") {
+	fmt.Println("\tPart Two: will print preliminary results every time new max path is found. It's a really long walk...")
+	MaxPath(maze) // 6246
+	// } else {
+	// fmt.Println("\tPart Two: (skipped by default, run with a '--bruteforce' option and prepare to wait up to forever)")
+	// }
 }

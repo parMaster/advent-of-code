@@ -124,10 +124,11 @@ func (g Grid) Show(r image.Point, bounds image.Rectangle, nq map[image.Point]int
 	fmt.Println()
 }
 
+// memo for "what determines the result?" - beam position, doesn't matter how it got there
 var memo map[image.Point]int = map[image.Point]int{}
 
 // recursive part 2 with memoization
-func rec(m Grid, beam image.Point, h int) int {
+func rec(g Grid, beam image.Point, h int) int {
 	if beam.Y == h {
 		return 1
 	}
@@ -135,14 +136,13 @@ func rec(m Grid, beam image.Point, h int) int {
 		return v
 	}
 	down := beam.Add(moves[0])
-	if v, ok := m[down]; ok && v == '^' {
-		dr, dl := down.Add(moves[1]), down.Add(moves[2])
-		res := rec(m, dl, h) + rec(m, dr, h)
-		memo[beam] = res
-		return res
+	if v, ok := g[down]; ok && v == '^' {
+		memo[beam] = 0
+		memo[beam] += rec(g, down.Add(moves[1]), h) // down-left
+		memo[beam] += rec(g, down.Add(moves[2]), h) // down-right
+		return memo[beam]
 	}
 
-	res := rec(m, down, h)
-	memo[beam] = res
-	return res
+	memo[beam] = rec(g, down, h)
+	return memo[beam]
 }

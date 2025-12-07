@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"image"
 	"slices"
 	"strconv"
 )
@@ -149,4 +150,27 @@ func all(res uint64, nums []uint64) (out []uint64) {
 	out = append(out, all(res*n, rest)...)
 
 	return out
+}
+
+// memo for "what determines the result?" - beam position, doesn't matter how it got there
+var memo map[image.Point]int = map[image.Point]int{}
+
+// a keeper example of recursive memoized solution
+func rec(g Grid, beam image.Point, h int) int {
+	if beam.Y == h {
+		return 1
+	}
+	if v, ok := memo[beam]; ok {
+		return v
+	}
+	down := beam.Add(XYDir[2]) // down
+	if v, ok := g[down]; ok && v == '^' {
+		memo[beam] = 0
+		memo[beam] += rec(g, down.Add(XYDir[1]), h) // down-left
+		memo[beam] += rec(g, down.Add(XYDir[3]), h) // down-right
+		return memo[beam]
+	}
+
+	memo[beam] = rec(g, down, h)
+	return memo[beam]
 }

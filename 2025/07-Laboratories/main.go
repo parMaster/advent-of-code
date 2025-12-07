@@ -40,11 +40,6 @@ func read(file string) (Grid, image.Point, int, int) {
 	return m, start, w, h
 }
 
-func p2_recursive(file string) (p2Rec int) {
-	m, start, _, h := read(file)
-	return rec(m, start, h)
-}
-
 func solve(file string) (p1, p2 int) {
 	m, start, w, h := read(file)
 	if slices.Contains(os.Args[1:], "--visual") {
@@ -90,6 +85,34 @@ func solve(file string) (p1, p2 int) {
 	return quantumSplit(m, start, h)
 }
 
+// memo for "what determines the result?" - beam position, doesn't matter how it got there
+var memo map[image.Point]int = map[image.Point]int{}
+
+// recursive part 2 with memoization
+func rec(g Grid, beam image.Point, h int) int {
+	if beam.Y == h {
+		return 1
+	}
+	if v, ok := memo[beam]; ok {
+		return v
+	}
+	down := beam.Add(moves[0])
+	if v, ok := g[down]; ok && v == '^' {
+		memo[beam] = 0
+		memo[beam] += rec(g, down.Add(moves[1]), h) // down-left
+		memo[beam] += rec(g, down.Add(moves[2]), h) // down-right
+		return memo[beam]
+	}
+
+	memo[beam] = rec(g, down, h)
+	return memo[beam]
+}
+
+func p2_recursive(file string) (p2Rec int) {
+	m, start, _, h := read(file)
+	return rec(m, start, h)
+}
+
 func main() {
 	start := time.Now()
 	fmt.Println("Day 07: Laboratories")
@@ -122,27 +145,4 @@ func (g Grid) Show(r image.Point, bounds image.Rectangle, nq map[image.Point]int
 		fmt.Println()
 	}
 	fmt.Println()
-}
-
-// memo for "what determines the result?" - beam position, doesn't matter how it got there
-var memo map[image.Point]int = map[image.Point]int{}
-
-// recursive part 2 with memoization
-func rec(g Grid, beam image.Point, h int) int {
-	if beam.Y == h {
-		return 1
-	}
-	if v, ok := memo[beam]; ok {
-		return v
-	}
-	down := beam.Add(moves[0])
-	if v, ok := g[down]; ok && v == '^' {
-		memo[beam] = 0
-		memo[beam] += rec(g, down.Add(moves[1]), h) // down-left
-		memo[beam] += rec(g, down.Add(moves[2]), h) // down-right
-		return memo[beam]
-	}
-
-	memo[beam] = rec(g, down, h)
-	return memo[beam]
 }
